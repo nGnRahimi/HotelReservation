@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewData["Title"] = "VerifyPhoneNumber";
+}
+
+@model VerifyPhoneNumberViewModel
+
+<form asp-action="VerifyPhoneNumber" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+    <input type="hidden"  asp-for="UserId" class="form-control" readonly />
+
+
+    <div class="form-group">
+        <lable asp-for="PhoneNumber"></lable>
+        <input asp-for="PhoneNumber" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <lable asp-for="Code"></lable>
+        <input asp-for="Code" class="form-control" />
+        <span asp-validation-for="Code" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Verify</button>
+
+</form>

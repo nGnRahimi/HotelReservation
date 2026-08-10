@@ -1,0 +1,70 @@
+﻿using Domain.Models.Roles;
+using Domain.Models.Users;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace Admin.Controllers
+{
+
+    public class RolesController : Controller
+    {
+        private readonly RoleManager<Role> _roleManager;
+
+        public RolesController(RoleManager<Role> roleManager)
+        {
+            _roleManager = roleManager;
+        }
+
+
+        public async Task<IActionResult> Index()
+        {
+            var roles = _roleManager.Roles;
+            return View( await roles.ToListAsync());
+        }
+
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        //ایجاد نقش جدید
+        [HttpPost]
+        public async Task<IActionResult> Create(string roleName)
+        {
+            if (!string.IsNullOrEmpty(roleName))
+            {
+                var role = new Role()
+                {
+                    Name = roleName
+                };
+                var result = await _roleManager.CreateAsync(role);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return View();
+        }
+
+        //حذف نقش ها
+        [HttpPost]
+        public async Task<IActionResult> Delete(string roleId)
+        {
+            var role = await _roleManager.FindByIdAsync(roleId);
+            if (role != null)
+            {
+            var result = await _roleManager.DeleteAsync(role);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+          return View ("Index",_roleManager.Roles);
+        }
+    }
+}

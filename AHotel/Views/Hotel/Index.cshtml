@@ -1,0 +1,149 @@
+﻿@using Domain.Models.Hotels
+@model Hotel
+@{
+	ViewData["Title"] = "Index";
+}
+                <div class="jumbotron shade pt-5">
+                    <!-- form -->
+                    <div class="row ">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+
+                          
+                            <form id="hotelForm"  class="p-2">
+
+                                <div class="row">
+
+                    <div class="form-group  col-sm-12   col-lg-6">
+                        <label for="exampleFormControlInput1">ایمیل</label>
+                        <input name="Email" value="@Model.Email" type="email" class="form-control"
+                               placeholder="name@example.com">
+                    </div>
+
+                    <div class="form-group  col-sm-12   col-lg-6">
+                        <label for="exampleFormControlInput1">نام</label>
+                        <input name="Name" value="@Model.Name" type="text" class="form-control"
+                               placeholder="name@example.com">
+                    </div>
+
+
+                                </div>
+
+
+
+                                <div class="row">
+
+                    <div class="form-group  col-sm-12   col-lg-6">
+                        <label for="exampleFormControlInput1">شماره</label>
+                        <input name="Phone" value="@Model.Phone" type="text" class="form-control" 
+                               placeholder="name@example.com">
+                    </div>
+
+                    <div class="form-group  col-sm-12   col-lg-6">
+                        <label for="exampleFormControlInput1">شهر</label>
+                        <input name="City" value="@Model.City" type="text" class="form-control"
+                               placeholder="name@example.com">
+                    </div>
+
+                                </div>
+
+
+
+
+                <div class="row">
+                
+
+                    <div class="form-group  col-sm-12   col-lg-6">
+                        <label for="exampleFormControlInput1">ستاره</label>
+                        <input name="Star" value="@Model.Star" type="text" class="form-control" 
+                               placeholder="name@example.com">
+                    </div>
+                    <div class="form-group  col-sm-12   col-lg-6">
+                        <label for="exampleFormControlInput1">فعال؟</label>
+                        <input name="State" value="true" @(Model.State ? "Checked" : "") type="checkbox" class="form-control" 
+                               placeholder="name@example.com">
+                    </div>
+
+                </div>
+
+
+
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">آدرس</label>
+                                    <textarea name="Address" class="form-control"  rows="3">@Model.Address</textarea>
+                                </div>
+
+
+
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">توضیحات</label>
+                    <textarea name="Description"  class="form-control"  rows="3">@Model.Description</textarea>
+                </div>
+
+                <button id="submitForm" type="submit" class="btn shade f-secondary text-center">Submit</button>
+
+
+                            </form>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+ @section Scripts {
+     <script>
+
+         document.getElementById('submitForm').addEventListener('click', async function (e){
+             e.preventDefault();
+             const form = document.getElementById('hotelForm');
+             const formData = new formData(form);
+
+             try {
+                 const response = await fetch('/Hotel/Hotel' , {
+                     method: 'POST',
+                     body: formData
+                 });
+                const result = await response.json();
+
+                 if (response.ok){
+                   const Toast = Swal.mixin({
+                       toast: true,
+                       position: "top-start",
+                       showConfirmButton: false,
+                       timer: 3000,
+                       timerProgressBar: true,
+                       didOpen: (toast) => {
+                           toast.onmouseenter = Swal.stopTimer;
+                           toast.onmouseleave = Swal.resumeTimer;
+                       }
+                   });
+                   Toast.fire({
+                       icon:"success",
+                       title:"عملیات با موفقیت انجام شد"
+                   });
+                 }else {
+                     const Toast = Swal.mixin({
+                      toast: true,
+                      position: "top-start",
+                      showConfirmButton: false,
+                      timer: 3000,
+                      timerProgressBar: true,
+                      didOpen: (toast) => {
+                          toast.onmouseenter = Swal.stopTimer;
+                          toast.onmouseleave = Swal.resumeTimer;
+                      }
+                  });
+                  Toast.fire({
+                      icon:"error",
+                      title: result.details
+                  });
+                 }
+
+             } catch (error){
+                 console.error('Fetch error:', error);
+             }
+         });
+
+
+     </script>
+ }
