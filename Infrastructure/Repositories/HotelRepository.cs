@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class HotelRepository : BaseRepository<HotelRepository, int>, IHotelRepository
+    public class HotelRepository : BaseRepository<Hotel, int>, IHotelRepository
     {
         public HotelRepository(ApplicationDbContext context) : base(context)
         {

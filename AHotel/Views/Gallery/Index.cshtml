@@ -1,0 +1,50 @@
+﻿@using Domain.Models.HotelGalleries
+
+@{
+	ViewData["Title"] = "Index";
+}
+@model List<HotelGallery>
+<form asp-action="SetImg" enctype="multipart/form-data">
+	<input type="file" name="file" />
+	<button id="submitForm" type="submit" class="btn shade f-secondary text-center">ارسال</button>
+</form>
+<div class="img">
+	@foreach (var item in Model)
+	{
+		<div class="gallery">
+			<a target="_blank" href="img_5terre.jpg">
+				<img src="/api/file/GetFile?fileName=@item.Path" alt="Cinque Trre" width="600" height="400" />
+			</a>
+			<a asp-action="RemoveImg" asp-route-id="@item.Id" class="desc"> <i style="cursor:pointer" class="fa fa-trash text-danger"></i></a>
+		</div>
+	}
+	
+</div>
+
+<style>
+.img{
+	display : flex;
+	flex-direction : row;
+	flex-wrap : wrap;
+}
+
+
+div.gallery{
+	margin: 5px;
+	border: 1px solid #ccc;
+	width:280px;
+}
+div.gallery:hover{
+	border:1px solid #777;
+}
+
+div.gallery img {
+	width: 100%;
+	height: auto;
+}
+
+a.desc{
+	padding: 15px;
+	text-align: center;
+}
+</style>

@@ -16,6 +16,8 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Application.Features.Hotels.Command.Validation;
+using FluentValidation;
+using Application.FileUpload;
 namespace Application
 {
     public static class DependencyInjection
@@ -37,36 +39,7 @@ namespace Application
 
             services.AddValidatorsFromAssemblyContaining(typeof(UpdateHotelValidator));
             services.AddAutoMapper(cfg => { }, typeof(MapperProfile).Assembly);
-            // services.AddHostedService<MyBackGroundService>();
-            //services.AddHostedService<QueuedHostedService>();
-            //services.AddSingleton<IBackgroundTaskQueue>(ctx =>
-
-            //{
-            //    if (!int.TryParse(Configuration["QueueCapacity"], out var queueCapacuty))
-            //        queueCapacuty = 100;
-            //    return new BackgroundTaskQueue(queueCapacuty);
-
-
-
-
-            //services.AddHangfire(Config =>
-            //Config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-            //.UseSimpleAssemblyNameTypeSerializer()
-            //.UseRecommendedSerializerSettings()
-            //.UseSqlServerStorage("Server=.;Database=hangFire;Trusted_Connection=True;TrustServerCertificate=True", new SqlServerStorageOptions
-            //{
-            //    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-            //    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-            //    QueuePollInterval = TimeSpan.Zero,
-            //    UseRecommendedIsolationLevel = true,
-            //    UsePageLockOnDequeue = true,
-            //    DisableGlobalLocks = true
-            //}));
-
-            ////Add the processing Server as IHostedService
-            //services.AddHangfireServer();
-            //services.AddSingleton<IUserConnectionManager, UserConnectionManager>();
-            //services.AddSignalR();
+           services.AddScoped<IFileUploadService, FileUploadService>();
             return services;
 
         }

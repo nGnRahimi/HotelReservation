@@ -1,4 +1,5 @@
 ﻿using Domain.BaseEntity;
+using Domain.Models.HotelGalleries;
 using Domain.Models.Hotels;
 using Domain.Models.Roles;
 using Domain.Models.Users;
@@ -29,6 +30,7 @@ namespace Infrastructure
         }
 
         public DbSet<Hotel> Hotels { get; set; }
+        public DbSet<HotelGallery> HotelGalleries { get; set; }
 
 
         public async Task<int> SaveEntitiesAsync(CancellationToken cancellationToken = default)

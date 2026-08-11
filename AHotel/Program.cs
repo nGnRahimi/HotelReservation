@@ -5,8 +5,7 @@ using Domain.Models.Users;
 using Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using System.Data;
-
-
+using Newtonsoft.Json;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
