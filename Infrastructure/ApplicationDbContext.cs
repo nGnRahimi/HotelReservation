@@ -2,6 +2,7 @@
 using Domain.Models.HotelGalleries;
 using Domain.Models.Hotels;
 using Domain.Models.Roles;
+using Domain.Models.Rooms;
 using Domain.Models.Users;
 using Infrastructure.Extention;
 using Infrastructure.UnitOfWork;
@@ -31,6 +32,9 @@ namespace Infrastructure
 
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<HotelGallery> HotelGalleries { get; set; }
+
+        public DbSet<Room> Rooms { get; set; }
+
 
 
         public async Task<int> SaveEntitiesAsync(CancellationToken cancellationToken = default)

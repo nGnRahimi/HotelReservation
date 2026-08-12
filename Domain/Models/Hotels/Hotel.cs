@@ -1,5 +1,6 @@
 ﻿using Domain.BaseEntity;
 using Domain.Models.HotelGalleries;
+using Domain.Models.Rooms;
 using Domain.Models.Users;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,9 @@ namespace Domain.Models.Hotels
         public bool State {  get; set; }
         public string Address { get; set; }
         public string City { get; set; }
-        public ICollection<User> Users {  get; set; }
-        public ICollection<HotelGallery> HotelGalleries { get; set; }
+        public ICollection<User>? Users {  get; set; }
+        public ICollection<HotelGallery>? HotelGalleries { get; set; }
+        public ICollection<Room>? Rooms { get; set; }
 
     }
 }
