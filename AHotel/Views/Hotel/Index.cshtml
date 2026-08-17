@@ -106,37 +106,11 @@
                 const result = await response.json();
 
                  if (response.ok){
-                   const Toast = Swal.mixin({
-                       toast: true,
-                       position: "top-start",
-                       showConfirmButton: false,
-                       timer: 3000,
-                       timerProgressBar: true,
-                       didOpen: (toast) => {
-                           toast.onmouseenter = Swal.stopTimer;
-                           toast.onmouseleave = Swal.resumeTimer;
-                       }
-                   });
-                   Toast.fire({
-                       icon:"success",
-                       title:"عملیات با موفقیت انجام شد"
-                   });
+                       UseSwal("success" ,"عملیات با موفقیت انجام شد");
+                 
                  }else {
-                     const Toast = Swal.mixin({
-                      toast: true,
-                      position: "top-start",
-                      showConfirmButton: false,
-                      timer: 3000,
-                      timerProgressBar: true,
-                      didOpen: (toast) => {
-                          toast.onmouseenter = Swal.stopTimer;
-                          toast.onmouseleave = Swal.resumeTimer;
-                      }
-                  });
-                  Toast.fire({
-                      icon:"error",
-                      title: result.details
-                  });
+                    UseSwal("error" , result.details);
+                    
                  }
 
              } catch (error){
