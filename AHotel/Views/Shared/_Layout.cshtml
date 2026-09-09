@@ -33,8 +33,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/persian-datepicker@1.2.0/dist/css/persian-datepicker.css" />
     <link rel="stylesheet" href="~/css/main.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="~/js/My.js"></script>
 </head>
 
@@ -125,6 +127,9 @@
                 <li class="side a-collapse short ">
                     <a asp-action="Index" asp-controller="Rooms" class="side-item "><i class="fas fa-icons  mr-2"></i>اتاق ها</a>
                 </li>
+                <li class="side a-collapse short ">
+                    <a asp-action="Index" asp-controller="RoomPrice" class="side-item "><i class="fas fa-icons  mr-2"></i>قیمت ها</a>
+                </li>
 
 
 
@@ -191,6 +196,11 @@
                 fjs.parentNode.insertBefore(js, fjs);
             }
         }(document, 'script', 'weatherwidget-io-js');
+    </script>
+
+    <script src="https://unpkg.com/persian-date@1.1.0/dist/persian-date.js"></script>
+    <script src=" https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js">
     </script>
     <script src="~/js/main.js"></script>
     @await RenderSectionAsync("Scripts", required: false)

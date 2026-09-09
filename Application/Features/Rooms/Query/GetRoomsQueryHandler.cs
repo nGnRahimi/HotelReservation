@@ -20,12 +20,20 @@ namespace Application.Features.Rooms.Query
             _roomRepository = roomRepository;
         }
 
-        public async Task<List<Room>> Handle(GetRoomsQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<Room>> Handle(
+            GetRoomsQuery request,
+            CancellationToken cancellationToken)
         {
-            var data = await _roomRepository.Get(a => a.Enable && a.Hotel == request.HotelId.Value)
-                 .AsNoTracking()
-                 .SearchQuery(request.Search)
-                 .PaginatedListAsync(request.PageNumber ,request.PageSize , request.DisablePaging);
+            var data = await _roomRepository.Get(a =>
+                    a.Enable &&
+                    a.HotelId == request.HotelId.Value)
+                .AsNoTracking()
+                .SearchQuery(request.Search)
+                .PaginatedListAsync(
+                    request.PageNumber,
+                    request.PageSize,
+                    request.DisablePaging);
+            
             return data;
         }
     }

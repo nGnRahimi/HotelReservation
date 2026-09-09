@@ -22,6 +22,7 @@
                     <th scope="col">تعداد</th>
                     <th scope="col">تعداد تخت</th>
                     <th scope="col">ویو</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -33,6 +34,10 @@
                         <td>@item.Qty</td>
                         <td>@item.MainCapacity</td>
                         <td>@item.View</td>
+                        <td>
+                            <i onclick="Edit(@item.Id , @Model.PageNumber)" style="cursor:pointer" class="fa fa-edit text-info"></i>
+                            <i onclick="Delete(@item.Id , @Model.PageNumber)" style="cursor:pointer" class="fa fa-trash text-danger"></i>
+                        </td>
                     </tr>
 
                 }

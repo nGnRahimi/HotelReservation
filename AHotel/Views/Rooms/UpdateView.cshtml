@@ -1,0 +1,51 @@
+﻿@using Domain.Models.Rooms
+@model Room
+<form id="UpdateForm">
+    <input type="hidden" value="@Model.Id" name="Id" />
+    <div class="row">
+        <div class="form-group  col-sm-12   col-lg-6">
+            <label for="exampleFormControlInput1">نام</label>
+            <input name="Name" type="text" class="form-control" value="@Model.Name"
+                   placeholder="دو تخته">
+        </div>
+
+
+        <div class="form-group  col-sm-12   col-lg-6">
+            <label for="exampleFormControlInput1">تعداد</label>
+            <input name="Qty" type="text" class="form-control" value="@Model.Qty"
+                   placeholder="10">
+        </div>
+
+
+
+        <div class="form-group  col-sm-12   col-lg-6">
+            <label for="exampleFormControlInput1">تعداد تخت</label>
+            <input name="MainCapacity" type="text" class="form-control" value="@Model.MainCapacity"
+                   placeholder="2">
+        </div>
+
+
+        <div class="form-group  col-sm-12   col-lg-6">
+            <label for="exampleFormControlInput1">تعداد تخت اضافه</label>
+            <input name="ExtraCapacity" type="text" class="form-control" value="@Model.ExtraCapacity"
+                   placeholder="1">
+        </div>
+
+
+
+        <div class="form-group  col-sm-12   col-lg-6">
+            <label for="exampleFormControlInput1">ویو</label>
+            <input name="View" type="text" class="form-control" value="@Model.View"
+                   placeholder="جنگل">
+        </div>
+
+
+        <div class="form-group  col-sm-12   col-lg-6">
+            <img src="/api/file/GetFile?fileName=@Model.Path" width="150" />
+            <label for="exampleFormControlInput1">عکس</label>
+            <input name="Path" type="file" class="form-control">
+
+        </div>
+    </div>
+</form>
+<button onclick="SendEdit(@ViewBag.page)" class="btn  f-secondary text-center">ارسال</button>

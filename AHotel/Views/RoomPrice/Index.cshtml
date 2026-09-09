@@ -1,0 +1,126 @@
+﻿
+@{
+	ViewData["Title"] = "Index";
+}
+
+<button onclick="Create()" class="btn  f-secondary text-center">ایجاد بازه ی قیمت</button>
+
+<div class="card mt-2 shade ">
+    <div class="card-body">
+      <div class="d-flex justify-content-between my-2">
+			<button onclick="LastWeek()" class="btn  f-info text-center">هفته قبل</button>
+			<button onclick="NextWeek()" class="btn  f-info text-center">هفته بعد</button>
+
+	  </div>
+       
+    </div>
+
+	<div id="DataContainer">
+
+	</div>
+
+
+
+
+
+
+   </div>
+
+
+@section Scripts{
+	<script>
+
+			 document.addEventListener("DOMContentLoaded", async function () {
+			await GetList("");
+		});
+
+
+
+		async function GetList(start , week){
+				 
+					
+				var response = await fetch("/RoomPrice/List?start=" + start + "&week=" + week);
+				if(response.ok) {
+					 var res = await response.text();
+						 var container = document.getElementById("DataContainer");
+						 container.innerHTML = res;
+
+				}
+		}
+
+
+
+		async function Create()
+		{
+		   $('#MyModal').modal('show');
+
+			var response = await fetch("/RoomPrice/CreateView");
+			if(response.ok) {
+				 var res = await response.text();
+					 $('#MyModalBody').html(res);
+					  $('#ModalLabel').html("ایجاد بازه ی قیمت");
+					 LoadSelect();
+					  LoadDatePicker();
+			}
+		}
+
+
+
+		async function SendCreate()
+		{
+					 const form = document.getElementById('createForm');
+					 const formData = new formData(form);
+							  await PostForm('/RoomPrice/CreatePrice' , formData);
+								
+									  $('#MyModal').modal('hide');
+		}
+
+
+
+
+
+
+		async function LastWeek(){
+
+			var date = document.getElementById("start").value;
+			await GetList(date , "last")
+		}
+
+
+
+		async function NextWeek(){
+
+			var date = document.getElementById("start").value;
+			await GetList(date , "next")
+		}
+
+
+
+
+
+		function LoadDatePicker(){
+			 $(".example1").pDatepicker({
+					initialValue: false,
+					 format: 'YYYY/MM/DD',
+			  autoClose: true
+			});
+		}
+
+		function LoadSelect()
+		{
+			  $('.js-select').select2();
+
+					   let allOptions = [];
+					   $('.js-select option').each(function () {
+
+						   allOptions.push($(this).val());
+					   });
+
+
+					   $('.js-select').val(allOptions).trigger('change');
+
+		}
+
+		
+	</script>
+}

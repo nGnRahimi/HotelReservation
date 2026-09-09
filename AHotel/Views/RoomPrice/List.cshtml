@@ -1,0 +1,65 @@
+﻿@using Application.Common.Extentions
+@using Application.Features.RoomPrices.Dto
+
+@model RoomPriceDto
+
+<input type="hidden" id="start" value="@ViewBag.start" />
+
+
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th scope="col">اتاق ها</th>
+			@foreach (var item in Model.Days)
+			{
+				<th>
+					<div>
+						<p class="text-center">
+							@item.ToPersianDate()
+						</p>
+
+						<p class="text-center text-info">
+							@item.ToPersianDayOfWeek()
+						</p>
+					</div>
+
+				</th>
+
+			}
+		</tr>
+	</thead>
+	<tbody>
+
+		@foreach (var room in Model.Rooms)
+		{
+			<tr>
+				<th>@room.Name</th>
+				@foreach (var item in Model.Days)
+				{
+					var price = room.RoomPrices.Where(a => a.DateVal.Date == item.Date).FirstOrDefault();
+					if (price != null)
+					{
+						<th>
+							<input type="number" class="form-control" value="@price.Price" />
+							<input type="number" class="form-control" value="@price.BedPrice" />
+						</th>
+
+					}
+
+					else
+					{
+						<th>
+							<input type="number" class="form-control" />
+							<input type="number" class="form-control" />
+						</th>
+					}
+
+				}
+
+			</tr>
+		}
+
+
+
+	</tbody>
+</table>

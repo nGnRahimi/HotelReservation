@@ -65,31 +65,53 @@
 	{
                  const form = document.getElementById('createForm');
                  const formData = new formData(form);
-
-                 try {
-                     const response = await fetch('/Rooms/CreateRoom' , {
-                         method: 'POST',
-                         body: formData
-                     });
-                    const result = await response.json();
-
-                     if (response.ok){
-                       UseSwal("success" ,"عملیات با موفقیت انجام شد");
-
-                            $('#MyModal').modal('hide');
-                                 await GetList();
-                     }else {
-                                UseSwal("error" , result.details);
-                  
-                     }
-
-                 } catch (error){
-                     console.error('Fetch error:', error);
-                 }
+                          await PostForm('/Rooms/CreateRoom' , formData);
+                             await GetList(1);
+                                  $('#MyModal').modal('hide');
 	}
-</script>
+
+
+
+    async function Edit(id , page)
+    {
+            $('#MyModal').modal('show');
+
+            var response = await fetch("/Rooms/UpdateView/" + id + "?page" + page);
+            if(response.ok) {
+                 var res = await response.text();
+                     $('#MyModalBody').html(res);
+            }
+        
+    }
+
+
+
+
+        async function SendEdit(page)
+        {
+                         const form = document.getElementById('UpdateForm');
+                         const formData = new formData(form);
+                         await PostForm('/Rooms/UpdateRoom' , formData);
+                         await GetList(page);
+                              $('#MyModal').modal('hide');
+        }
+
+
+
+        function Delete(id , page)
+        {
+            var func = () => {
+                const data = {
+                    Id : id,
+                };
+
+                  PostJson("Rooms/DeleteRoom" , data , () => GetList(page) );
+
+            }
+                DeleteWithSwal(func);
+           
+        }
+         
+
+ </script>
 }
-
-
-
-
