@@ -2,36 +2,150 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<User> UserManager
 
-
 @{
     ViewData["Title"] = "Index";
 }
-@model IEnumerable<User>
 
-<h2>Users</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>UserName</th>
-            <th>Email</th>
-            <th>Roles</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model)
+@model IEnumerable<User>
+<div class="jumbotron shade pt-8">
+    <h1 class="animate__animated animate__bounce">کاربر</h1>
+    <p class="c-grey font-weight-light font-italic">
+        پنل ادمین
+    </p>
+    <button onclick="Create()" class="btn outlined o-glass c-glass"> اضافه کردن کاربر جدید </button>
+    <div style=" overflow-x: auto;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>کاربر</th>
+                    <th>ایمیل</th>
+                    <th>نقش</th>
+                    <th>هتل</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+
+                        <td>
+                            @* نمایش نقش‌های کاربر *@
+                            @string.Join(", ", await UserManager.GetRolesAsync(user))
+                        </td>
+                        <td>@user.HotelId</td>
+                        <td>
+                            <a onclick="ManageRoles(@user.Id)" class="btn outlined o-primary c-primary">دسترسی</a>
+                            <a onclick="SetHotel(@user.Id)" class="btn outlined o-third c-third">هتل</a>
+                        </td>
+           
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        async function Create()
         {
-            <tr>
-                <td>@user.UserName</td>
-                <td>@user.Email</td>
-                <td>
-                    @*نمایش نقش های کاربر*@
-                    @string.Join(",", await UserManager.GetRolesAsync(user))
-                </td>
-                <td>
-                    <a asp-action="ManageRoles" asp-route-userId="@user.Id" class="btn btn-primary">Manage Roles</a>
-                </td>
-            </tr>
+            $('#MyModal').modal('show');
+
+            var response = await fetch("/Users/Create");
+            if(response.ok)
+            {
+                var res = await response.text();
+                 $('#Modalbody').html(res);
+            }
         }
-    </tbody>
-</table>
+
+          
+
+         async function ManageRoles(id){
+                
+            $('#MyModal').modal('show');
+            
+            try{
+                    var response = await fetch("/Users/ManageRoles?userId=" + id );
+
+         
+            if(response.ok)
+            {
+                var res = await response.text();
+                 $('#Modalbody').html(res);
+            } else{
+                $('#Modalbody').html('<div class="text-danger">خطا در بارگذاری فرم نقش‌ها</div>');
+
+             }
+            } catch (error) {
+                console.error('Error loading roles:', error);
+                $('#Modalbody').html('<div class="text-danger">خطا در ارتباط با سرور</div>');
+            }
+        }
+
+
+         async function SetHotel(id){
+
+            $('#MyModal').modal('show');
+
+            try{
+                    var response = await fetch("/Users/SetHotel?userId=" + id );
+
+
+            if(response.ok)
+            {
+                var res = await response.text();
+                 $('#Modalbody').html(res);
+            } else{
+                $('#Modalbody').html('<div class="text-danger">خطا در بارگذاری فرم نقش‌ها</div>');
+
+             }
+            } catch (error) {
+                console.error('Error loading roles:', error);
+                $('#Modalbody').html('<div class="text-danger">خطا در ارتباط با سرور</div>');
+            }
+        }
+
+    </script>
+    <!-- جای مثلاً در پایین صفحه -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".set-hotel-btn").forEach(btn => {
+                btn.addEventListener("click", async function (e) {
+                    e.preventDefault();
+                    const userId = this.dataset.userId;
+
+                    // دریافت فرم از سرور
+                    const response = await fetch("/User/SetHotelPartial?userId=${userId}");
+                    const html = await response.text();
+
+                    // نمایش در دیالوگ یا بخش مشخصی از صفحه
+                document.getElementById("Modalbody").innerHTML = html;
+                    $('#MyModal').modal('show');
+
+                    // ارسال فرم
+                    document.getElementById("setHotelForm").addEventListener("submit", async function (e) {
+                        e.preventDefault();
+                        const formData = new FormData(this);
+
+                        const res = await fetch('/YourController/SetHotelSubmit', {
+                            method: 'POST',
+                            body: new URLSearchParams(formData)
+                        });
+
+                        const result = await res.json();
+                        if (result.success) {
+                            alert("هتل با موفقیت ثبت شد");
+                            location.reload(); // یا آپدیت دستی جدول
+                        }
+                    });
+                });
+            });
+        });
+
+    </script>
+
+}

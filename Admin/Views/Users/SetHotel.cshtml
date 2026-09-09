@@ -1,0 +1,21 @@
+﻿@{
+    Layout = null;
+}
+
+
+<h2 class="animate__animated animate__bounce">تخصیص نقش به کاربر</h2>
+<br />
+<form asp-action="SetHotel" method="post">
+    <input type="hidden" name="userId" value="@ViewBag.userId" />
+   
+    <div class="form-group">
+        <label>هتل کاربر را انتخاب کنید</label>
+        <div class="form-group">
+           
+            <select class="form-control" name="hotelId" asp-items="@ViewBag.hotels">
+                <option value="0">لیست هتل</option>
+            </select>
+        </div>
+    </div>
+    <button type="submit" class="btn outlined o-second c-second">ثبت</button>
+</form>
