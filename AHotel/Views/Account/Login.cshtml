@@ -1,4 +1,7 @@
-﻿@{
+﻿@model Admin.Models.LoginViewModel
+
+
+@{
     Layout = "_LoginLayout";
     ViewData["Title"] = "Login";
 }
@@ -15,27 +18,36 @@
                     <div class="col-md-5 card shade mw-center mh-center">
                         <img src="~/svg/logo.svg" alt="..." class="mw-center " height="130" width="300">
                         <hr class="hr-dashed m-0">
-                        <form asp-action="Login" method="post" class="">
-                            <div class="form-group m-0">
-                                <label for="exampleInputEmail1">Email address</label>
-                                <input type="email" class="form-control" name="email" id="exampleInputEmail1"
-                                       aria-describedby="emailHelp" placeholder="Enter email">
-                               
-                            </div>
-                            <div class="form-group m-0">
-                                <label for="exampleInputPassword1">Password</label>
-                                <input type="password" class="form-control" name="password" id="exampleInputPassword1"
-                                       placeholder="Password">
-                            </div>
-                            <div class="form-check pt-2">
-                                <input type="checkbox" class="form-check-input" name="check" value="true" id="exampleCheck1">
-                                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                            </div>
-                            <button type="submit" class="btn shade f-primary btn-block">Submit</button>
-                        </form>
-                    </div>
+                        <form asp-action="Login" asp-controller="Account" method="post">
+                            @Html.AntiForgeryToken()
 
-                </div>
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <div class="form-group">
+                                <label asp-for="Email"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Password"></label>
+                                <input asp-for="Password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input asp-for="RememberMe" class="form-check-input" />
+                                    <label asp-for="RememberMe" class="form-check-label"></label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                Login
+                            </button>
+
+                        </form>
                 <!--  -->
 
 

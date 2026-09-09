@@ -1,0 +1,119 @@
+﻿@model IEnumerable<Domain.Models.Hotels.Hotel>
+
+@{
+    ViewData["Title"] = "لیست هتل‌ها";
+   
+}
+
+
+
+<div class="jumbotron shade pt-8">
+    <h1 class="animate__animated animate__bounce">هتل</h1>
+    <p class="c-grey font-weight-light font-italic">
+        پنل هتل
+    </p>
+
+    <button onclick="Create()" class="btn outlined o-glass c-glass"> اضافه کردن هتل جدید </button>
+    <div style=" overflow-x: auto;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>نام</th>
+                    <th>شهر</th>
+                    <th>ایمیل</th>
+                    <th>ستاره</th>
+                    <th>وضعیت</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var hotel in Model)
+                {
+                    <tr>
+                        <td>@hotel.Name</td>
+                        <td>@hotel.City</td>
+                        <td>@hotel.Email</td>
+                        <td>@hotel.Star</td>
+                        <td>@(hotel.State ? "فعال" : "غیرفعال")</td>
+                        <td>
+                            <a class="btn outlined o-primary c-primary" onclick="Edit(@hotel.Id)">ویرایش</a>
+                            <a class="btn outlined o-second c-second" onclick="Details(@hotel.Id)">جزئیات</a>
+                            <a class="btn outlined o-danger c-danger" onclick="Delete(@hotel.Id)">حذف</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        async function Edit(id ){
+            $('#MyModal').modal('show');
+             try{
+            var response = await fetch("/Hotel/Edit/" + id );
+            if(response.ok)
+            {
+                var res = await response.text();
+                 $('#Modalbody').html(res);
+            } else{
+                $('#Modalbody').html('<div class="text-danger">خطا در بارگذاری فرم نقش‌ها</div>');
+              }
+             }
+             catch (error) {
+                console.error('Error loading roles:', error);
+                $('#Modalbody').html('<div class="text-danger">خطا در ارتباط با سرور</div>');
+            }
+        }
+
+         async function Details(id){
+            $('#MyModal02').modal('show');
+            try{
+             var response = await fetch("/Hotel/Details/" + id );
+            if(response.ok)
+            {
+                var res = await response.text();
+                 $('#Modalbody02').html(res);
+            } else{
+                $('#Modalbody02').html('<div class="text-danger">خطا در بارگذاری فرم نقش‌ها</div>');
+
+             }
+            } catch (error) {
+                console.error('Error loading roles:', error);
+                $('#Modalbody02').html('<div class="text-danger">خطا در ارتباط با سرور</div>');
+            }
+        }
+
+
+         async function Delete(id){
+            $('#MyModal').modal('show');
+            try{
+             var response = await fetch("/Hotel/Delete/" + id );
+            if(response.ok)
+            {
+                var res = await response.text();
+                 $('#Modalbody').html(res);
+            } else{
+                $('#Modalbody').html('<div class="text-danger">خطا در بارگذاری فرم نقش‌ها</div>');
+             }
+            } catch (error) {
+                console.error('Error loading roles:', error);
+                $('#Modalbody').html('<div class="text-danger">خطا در ارتباط با سرور</div>');
+            }
+        }
+
+        async function Create()
+        {
+            $('#MyModal').modal('show');
+
+            var response = await fetch("/Hotel/Create");
+            if(response.ok)
+            {
+                var res = await response.text();
+                 $('#Modalbody').html(res);
+            }
+        }
+
+    </script>
+}

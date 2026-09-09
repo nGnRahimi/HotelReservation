@@ -1,7 +1,8 @@
-﻿using Domain.Models.Users;
+﻿using System.Security.Claims;
+using Admin.Models;
+using Domain.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace AHotel.Controllers
 {
@@ -25,28 +26,44 @@ namespace AHotel.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Login(string email, string password, bool check)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            var result = await _signInManager.PasswordSignInAsync(email, password, check, lockoutOnFailure: false);
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var result = await _signInManager.PasswordSignInAsync(
+                model.Email,
+                model.Password,
+                model.RememberMe,
+                lockoutOnFailure: false
+            );
 
             if (result.Succeeded)
             {
+                var user = await _userManager.FindByEmailAsync(model.Email);
 
-                var user = await _userManager.FindByEmailAsync(email);
-
-                if (user.HotelId == null)
+                if (user == null)
                 {
-                    return View();
+                    ModelState.AddModelError("", "کاربر پیدا نشد.");
+                    return View(model);
                 }
 
-                var claim = new Claim("hotelId", user.HotelId.ToString());
-                await _userManager.AddClaimAsync(user, claim);
+               
+                var existingClaim = await _userManager.GetClaimsAsync(user);
+
+                if (!existingClaim.Any(x => x.Type == "hotelId"))
+                {
+                    var claim = new Claim("hotelId", user.HotelId.ToString());
+                    await _userManager.AddClaimAsync(user, claim);
+                }
+
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
 
-            return View();
+            ModelState.AddModelError("", "ایمیل یا رمز عبور اشتباه است.");
+            return View(model);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
