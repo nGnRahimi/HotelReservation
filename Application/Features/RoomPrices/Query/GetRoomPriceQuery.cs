@@ -12,5 +12,7 @@ namespace Application.Features.RoomPrices.Query
     public class GetRoomPriceQuery : BaseQueryRequest , IRequest<RoomPriceDto>
     {
         public DateTime startDate { get; set; } 
+        public List<int>? rooms { get; set; }
+
     }
 }

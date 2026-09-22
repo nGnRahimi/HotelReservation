@@ -22,7 +22,8 @@ namespace Application.Features.RoomPrices.Query
         
         public async Task<RoomPriceDto> Handle(GetRoomPriceQuery request, CancellationToken cancellationToken)
         {
-            var prices = await _roomPrice.Get(a => a.Room.HotelId == request.HotelId && a.Room.Enable)
+            var prices = await _roomPrice.Get(a => a.Room.HotelId == request.HotelId && a.Room.Enable
+             &&(request.rooms != null ? request.rooms.Contains(a.RoomId) : true))
                 .Include(a => a.Room)
                 .GroupBy(r => new { r.RoomId , r.Room.Name})
                 .Select(s => new RoomPricesName()

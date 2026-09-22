@@ -1,0 +1,207 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<button onclick="Create()" class="btn f-secondary text-center">
+    ایجاد بازه ی ظرفیت
+</button>
+
+<div class="card mt-2 shade">
+    <div class="card-body">
+        <div class="d-flex justify-content-between" style="align-items:baseline">
+
+            <div>
+                <button onclick="LastWeek()" class="btn f-info text-center">
+                    هفته قبل
+                </button>
+            </div>
+
+            <div class="form-group" style="width: 50%">
+                <select id="rooms"
+                        onchange="ChangeRooms()"
+                        style="width: 100%"
+                        name="rooms[]"
+                        multiple="multiple"
+                        class="form-control js-select"
+                        asp-items="@ViewBag.Rooms">
+                </select>
+            </div>
+
+            <div>
+                <button onclick="NextWeek()" class="btn f-info text-center">
+                    هفته بعد
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="DataContainer" class="px-4">
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+
+        document.addEventListener("DOMContentLoaded", async function () {
+            await GetList("");
+            LoadSelect();
+        });
+
+
+        async function GetList(start, week) {
+
+            var rooms = $("#rooms").val();
+
+            var response = await fetch(
+                "/RoomCapacity/List?start=" + start + "&week=" + week,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(rooms)
+                }
+            );
+
+            if (response.ok) {
+
+                var res = await response.text();
+
+                var container = document.getElementById("DataContainer");
+
+                container.innerHTML = res;
+            }
+        }
+
+
+        async function Create() {
+
+            $('#MyModal').modal('show');
+
+            var response = await fetch("/RoomCapacity/CreateView");
+
+            if (response.ok) {
+
+                var res = await response.text();
+
+                $('#MyModalBody').html(res);
+
+                $('#ModalLabel').html("ایجاد بازه ی ظرفیت");
+
+                LoadSelect();
+
+                LoadDatePicker();
+            }
+        }
+
+
+        async function SendCreate() {
+
+            const form = document.getElementById('createForm');
+
+            const formData = new FormData(form);
+
+            await PostForm(
+                '/RoomCapacity/CreateCapacity',
+                formData
+            );
+
+            $('#MyModal').modal('hide');
+
+            var date = document.getElementById("start").value;
+
+            await GetList(date, "");
+        }
+
+
+        async function SendCalender() {
+
+            const form = document.getElementById('CalenderForm');
+
+            const formData = new FormData(form);
+
+            await PostForm(
+                '/RoomCapacity/SaveCalender',
+                formData
+            );
+
+            var date = document.getElementById("start").value;
+
+            await GetList(date, "");
+        }
+
+
+        async function LastWeek() {
+
+            var date = document.getElementById("start").value;
+
+            await GetList(date, "last");
+        }
+
+
+        async function NextWeek() {
+
+            var date = document.getElementById("start").value;
+
+            await GetList(date, "next");
+        }
+
+
+        async function ChangeRooms() {
+
+            var rooms = $("#rooms").val();
+
+            var date = document.getElementById("start").value;
+
+            var response = await fetch(
+                "/RoomCapacity/List?start=" + date,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(rooms)
+                }
+            );
+
+            if (response.ok) {
+                var res = await response.text();
+
+                var container = document.getElementById("DataContainer");
+
+                container.innerHTML = res;
+            }
+        }
+
+
+        function LoadDatePicker() {
+
+            $(".example1").pDatepicker({
+                initialValue: false,
+                format: 'YYYY/MM/DD',
+                autoClose: true
+            });
+        }
+
+
+        function LoadSelect() {
+
+            $('.js-select').select2();
+
+            let allOptions = [];
+
+            $('.js-select option').each(function () {
+
+                allOptions.push($(this).val());
+
+            });
+
+            $('.js-select')
+                .val(allOptions)
+                .trigger('change');
+        }
+
+    </script>
+}

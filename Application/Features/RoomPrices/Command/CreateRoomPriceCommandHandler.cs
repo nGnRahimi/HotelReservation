@@ -35,6 +35,7 @@ namespace Application.Features.RoomPrices
                     .ToListAsync();
 
 
+
             foreach (var roomId in request.Rooms)
             {
                 var room = await _roomRepository.FindAsync(roomId);
@@ -43,6 +44,8 @@ namespace Application.Features.RoomPrices
 
                 if(room.HotelId != request.HotelId.Value)
                     throw new CustomException("خطا");
+
+
 
 
                 for (int i = 0; i < days; i++)
@@ -76,6 +79,13 @@ namespace Application.Features.RoomPrices
                     }
 
                 }
+
+
+                var history = new RoomPriceHistory(roomId , request.Price , request.BedPrice , from , to );
+                _roomPrice.AddHistory(history);
+
+
+
             }
             await _roomPrice.UnitOfWork.SaveEntitiesAsync();
 

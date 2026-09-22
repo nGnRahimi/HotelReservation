@@ -1,4 +1,5 @@
 ﻿using Domain.BaseEntity;
+using Domain.Models.Capacities;
 using Domain.Models.HotelGalleries;
 using Domain.Models.Hotels;
 using Domain.Models.Prices;
@@ -37,7 +38,8 @@ namespace Infrastructure
         public DbSet<Room> Rooms { get; set; }
 
         public DbSet<RoomPrice> RoomPrices { get; set; }
-
+        public DbSet<RoomCapacityHistory> RoomCapacityHistory { get; set; }
+        public DbSet<RoomPriceHistory> RoomPriceHistories { get; set; }
         public async Task<int> SaveEntitiesAsync(CancellationToken cancellationToken = default)
         {
             await _mediator.DispachDomainEvent(this);

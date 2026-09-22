@@ -1,4 +1,5 @@
 ﻿using Application.Features.RoomPrices;
+using Application.Features.RoomPrices.Command;
 using Application.Features.RoomPrices.Query;
 using Application.Features.Rooms;
 using Application.Features.Rooms.Query;
@@ -19,16 +20,21 @@ namespace AHotel.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var rooms = await _mediator.Send(new GetRoomsQuery()
+            {
+                DisablePaging = true
+            });
+            ViewBag.Rooms = new SelectList(rooms.Items, "Id", "Name");
+
+
             return View();
         }
 
 
 
 
-
-
-
-        public async Task<IActionResult> List(DateTime? start = null , string? week = null)
+        [HttpPost]
+        public async Task<IActionResult> List(DateTime? start = null , string? week = null ,[FromBody] List<int>? rooms = null)
         {
             start = start ?? DateTime.Now;
             if (!String.IsNullOrEmpty(week))
@@ -43,11 +49,8 @@ namespace AHotel.Controllers
             }
 
 
-            var res = await _mediator.Send(new GetRoomPriceQuery()
-            {
-                startDate = start.Value
-            });
-
+            var res = await _mediator.Send(new GetRoomPriceQuery() { startDate = start.Value , rooms = rooms });
+           
             ViewBag.start = start.ToString();
 
             return PartialView(res);
@@ -78,6 +81,14 @@ namespace AHotel.Controllers
         }
 
 
+
+
+        [HttpPost]
+        public async Task<IActionResult> SaveCalender(SaveCalenderCommand command)
+        {
+            var res = await _mediator.Send(command);
+            return Ok(res);
+        }
 
 
 
