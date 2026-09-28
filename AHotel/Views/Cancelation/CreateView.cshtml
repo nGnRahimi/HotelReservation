@@ -1,0 +1,62 @@
+﻿<form id="createForm">
+
+    <div class="row">
+        <div class="form-group col-sm-12 col-lg-12">
+            <label for="exampleFormControlInput1">عنوان</label>
+            <input name="Title"
+                   type="text"
+                   class="form-control"
+                   placeholder="مهر">
+
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="form-group col-sm-12 col-lg-6">
+            <label for="exampleFormControlInput1">از تاریخ</label>
+            <input name="from" class="form-control example1">
+        </div>
+
+        <div class="form-group col-sm-12 col-lg-6">
+            <label for="exampleFormControlInput1">تا تاریخ</label>
+            <input name="to" class="form-control example1">
+        </div>
+    </div>
+
+    <div id="ruleTemplate" class="row">
+        <div class="form-group col-sm-12 col-lg-6">
+            <label for="exampleFormControlInput1">تا ساعت</label>
+
+            <input name="Rules[0].Hours"
+                   type="number"
+                   class="form-control hours"
+                   placeholder="24">
+        </div>
+
+        <div class="form-group col-sm-12 col-lg-6">
+            <label for="exampleFormControlInput1">درصد</label>
+            <input name="Rules[0].RefundPercent" type="number" class="form-control refund"
+                   placeholder="50" />
+
+        </div>
+
+
+        <div id="ruleContainer">
+
+        </div>
+
+
+
+
+
+
+
+
+
+</form>
+<button onclick="AddRule()" class="btn  btn-success text-center">+</button>
+<button onclick="RemoveRule()" class="btn  btn-danger text-center">-</button>
+
+
+<button onclick="SendCreate()" class="btn  f-secondary text-center">ارسال</button>

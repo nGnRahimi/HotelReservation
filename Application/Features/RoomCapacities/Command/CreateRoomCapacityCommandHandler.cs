@@ -63,7 +63,8 @@ namespace Application.Features.RoomCapacities
                         {
                             RoomId = roomId,
                             Qty = request.Qty,
-                            DateVal = date
+                            DateVal = date,
+                            State = request.State,
                         };
 
                         _roomCapacity.Add(newRoomCapacity);
@@ -71,6 +72,7 @@ namespace Application.Features.RoomCapacities
                     else
                     {
                         roomCapacity.Qty = request.Qty;
+                        roomCapacity.State = request.State;
 
                         _roomCapacity.Update(roomCapacity);
                     }

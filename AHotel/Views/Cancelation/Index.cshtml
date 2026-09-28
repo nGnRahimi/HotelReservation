@@ -1,0 +1,85 @@
+﻿@{
+	ViewData["Title"] = "Index";
+}
+
+<button onclick="Create()" class="btn  f-secondary text-center">ایجاد</button>
+
+
+@section Scripts{
+	<script>
+
+		let counter = 0;
+
+
+			async function Create(){
+			$('#MyModal').modal('show');
+
+			var response = await fetch("/Cancelation/CreateView");
+			if(response.ok) {
+				 var res = await response.text();
+					 $('#MyModalBody').html(res);
+					 LoadDatePicker();
+					 counter = 0;
+			}
+		}
+
+
+
+
+		async function SendCreate()
+		{
+					 const form = document.getElementById('createForm');
+					 const formData = new formData(form);
+							  await PostForm('/Cancelation/CreatePolicy' , formData);
+
+									  $('#MyModal').modal('hide');
+
+		}
+
+
+
+
+		function AddRule()
+		{
+          const ruleContainer = document.getElementById("ruleContainer");
+
+		  const ruleTemplate = document.getElementById("ruleTemplate");
+
+
+		  const newRule = ruleTemplate.cloneNode(true);
+
+		  newRule.id = '';
+		  counter ++;
+		  newRule.querySelector(".hours").setAttribute("name" , `Rules[${counter}]. Hours`)
+		   newRule.querySelector(".refund").setAttribute("name" , `Rules[${counter}].RefundPercent`)
+		  
+		  ruleContainer.appendChild(newRule);
+
+		}
+
+		function RemoveRule()
+		{
+			 const ruleContainer = document.getElementById("ruleContainer");
+
+			 const lastChild = ruleContainer.lastElementChild;
+			 if(lastChild)
+			 {
+				 ruleContainer.removeChild(lastChild);
+				 counter --;
+			 }
+		}
+
+
+		function LoadDatePicker(){
+			 $(".example1").pDatepicker({
+					initialValue: false,
+					 format: 'YYYY/MM/DD',
+			  autoClose: true
+			});
+		}
+
+
+
+	</script>
+	
+}

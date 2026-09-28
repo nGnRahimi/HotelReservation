@@ -1,8 +1,15 @@
-﻿
+﻿using Application.Common.MediatR;
+using Application.Features.RoomCapacities.Dto;
+using MediatR;
+using System;
+using System.Collections.Generic;
 
-namespace Application.Features.RoomCapacites.Query
+namespace Application.Features.RoomCapacities.Query
 {
-    public class GetRoomCapacityQuery
+    public class GetRoomCapacityQuery : BaseQueryRequest, IRequest<RoomCapacityDto>
     {
+        public DateTime startDate { get; set; }
+
+        public List<int>? rooms { get; set; }
     }
 }

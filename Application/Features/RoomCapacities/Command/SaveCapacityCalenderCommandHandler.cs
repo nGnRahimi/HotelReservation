@@ -37,6 +37,7 @@ namespace Application.Features.RoomCapacites.Command
                     {
                         RoomId = item.RoomId,
                         DateVal = item.DateVal,
+                        State = item.State,
                         Qty = item.Qty
                     };
 
@@ -45,6 +46,7 @@ namespace Application.Features.RoomCapacites.Command
                 else
                 {
                     capacity.Qty = item.Qty;
+                    capacity.State = item.State;
 
                     _roomCapacity.Update(capacity);
                 }

@@ -1,4 +1,5 @@
-﻿using Domain.Models.Capacities;
+﻿using Domain.Models.Cancelation;
+using Domain.Models.Capacities;
 using Domain.Models.HotelGalleries;
 using Domain.Models.Hotels;
 using Domain.Models.Prices;
@@ -28,6 +29,7 @@ namespace Infrastructure
             services.AddScoped<IRoomRepository,RoomRepository>();
             services.AddScoped<IRoomPriceRepository, RoomPriceRepository>();
             services.AddScoped<IRoomCapacityRepository, RoomCapacityRepository>();
+            services.AddScoped<ICancelationRepository, CancelationRepository>();
             return services;
 
 

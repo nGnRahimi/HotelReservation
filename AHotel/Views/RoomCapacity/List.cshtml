@@ -46,26 +46,47 @@
 
                     @foreach (var item in Model.Days)
                     {
-                        var capacity = room.RoomCapacities
+                        var price = room.RoomCapacities
                         .Where(a => a.DateVal.Date == item.Date)
                         .FirstOrDefault();
 
-                        if (capacity != null)
+                        if (price!= null)
                         {
                             <th>
 
                                 <input type="number"
                                        name="CapacityLists[@i].Qty"
                                        class="form-control"
-                                       value="@capacity.Qty" />
+                                       value="@price.Qty" />
 
                                 <input type="hidden"
                                        name="CapacityLists[@i].DateVal"
+                                       class="form-control"
                                        value="@item" />
 
                                 <input type="hidden"
                                        name="CapacityLists[@i].RoomId"
+                                       class="form-control"
                                        value="@room.RoomId" />
+
+                               <div class="d-flex justify-content-center mt-1">
+                                    <div class="reactor-widget">
+                                        <div class="reactor-switch">
+                                            <input type="checkbox" id="reactor" name="CapacityLists[@i].State" value="true" @(price.State ? "checked" : "") /> />
+                                            <label for="reactor" aria-label="Reactor toggle">
+                                                <span class="reactor-switch__core"></span>
+                                                <span class="reactor-switch__beam"></span>
+                                                <span class="reactor-switch__thumb"></span>
+                                                <span class="reactor-switch__state reactor-switch__state--off">OFF</span>
+                                                <span class="reactor-switch__state reactor-switch__state--on">ON</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                               </div>
+
+                                
+                                      
+                                
 
                             </th>
                         }
@@ -79,11 +100,31 @@
 
                                 <input type="hidden"
                                        name="CapacityLists[@i].DateVal"
+                                       class="form-control"
                                        value="@item" />
 
                                 <input type="hidden"
                                        name="CapacityLists[@i].RoomId"
+                                       class="form-control"
                                        value="@room.RoomId" />
+                                <div class="d-flex justify-content-center mt-1">
+                                    <div class="reactor-widget">
+                                        <div class="reactor-switch">
+                                            <input type="checkbox" id="reactor" name="CapacityLists[@i].State" />
+                                            <label for="reactor" aria-label="Reactor toggle">
+                                                <span class="reactor-switch__core"></span>
+                                                <span class="reactor-switch__beam"></span>
+                                                <span class="reactor-switch__thumb"></span>
+                                                <span class="reactor-switch__state reactor-switch__state--off">OFF</span>
+                                                <span class="reactor-switch__state reactor-switch__state--on">ON</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                               
+                               
+
 
                             </th>
                         }
@@ -104,3 +145,179 @@
         class="btn f-secondary text-center">
     ذخیره تغییرات
 </button>
+
+
+<style>
+    /* hide input */
+    .reactor-widget .reactor-switch input {
+        display: none;
+    }
+
+    /* track / shell */
+    .reactor-widget .reactor-switch label {
+        width: 120px; /* PERFECT MINI SIZE */
+        height: 55px;
+        position: relative;
+        display: block;
+        cursor: pointer;
+        border-radius: 999px;
+        overflow: hidden;
+        isolation: isolate;
+        background: linear-gradient(180deg, #0e1322 0%, #070a14 100%);
+        border: 1px solid #ffffff10;
+        box-shadow: inset 0 8px 20px #000a, inset 0 1px 0 #ffffff08, 0 10px 28px #0007;
+        transition: 600ms cubic-bezier(0.15, 0.95, 0.18, 1);
+    }
+
+        /* outer rim */
+        .reactor-widget .reactor-switch label::before {
+            content: "";
+            position: absolute;
+            inset: 2px;
+            border-radius: 999px;
+            box-shadow: inset 0 0 0 1px #ffffff08, inset 0 -4px 10px #000b, inset 0 4px 10px #ffffff05;
+            z-index: 0;
+        }
+
+    /* inner core */
+    .reactor-widget .reactor-switch__core {
+        position: absolute;
+        inset: 6px;
+        border-radius: 999px;
+        background: radial-gradient(110px 70px at 18% 50%, #ffffff0c, transparent 60%), radial-gradient(120px 80px at 82% 50%, #00000080, transparent 65%), linear-gradient(90deg, #2d3446, #151b2b);
+        box-shadow: inset 0 0 0 1px #ffffff06, inset 0 0 18px #000b;
+        transition: 600ms cubic-bezier(0.15, 0.95, 0.18, 1);
+        z-index: 1;
+    }
+
+    /* energy beam */
+    .reactor-widget .reactor-switch__beam {
+        position: absolute;
+        inset: -60% -30%;
+        background: conic-gradient( from 110deg, transparent 0 18%, #00f0ff18 26%, transparent 40% 55%, #7bffb518 66%, transparent 78% 100% );
+        filter: blur(20px);
+        opacity: 0.22;
+        animation: reactorBeam 6s linear infinite;
+        z-index: 0;
+    }
+
+   @@keyframes reactorBeam {
+        to {
+            transform: translateX(18%) rotate(360deg);
+        }
+    }
+
+    /* thumb */
+    .reactor-widget .reactor-switch__thumb {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        z-index: 3;
+        background: radial-gradient( circle at 25% 20%, #ffffff 0%, #eaf6ff 45%, #b4d7ea 100% );
+        box-shadow: 0 8px 16px #0009, inset 0 3px 8px #ffffff, inset -6px -9px 14px #90b3c666;
+        transition: 600ms cubic-bezier(0.15, 0.95, 0.18, 1);
+    }
+
+        /* inner lens */
+        .reactor-widget .reactor-switch__thumb::before {
+            content: "";
+            position: absolute;
+            inset: 5px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 25%, #ffffff66, transparent 55%), radial-gradient(circle at 75% 80%, #00000066, transparent 60%);
+            box-shadow: inset 0 0 0 1px #ffffff20;
+        }
+
+        /* glow tail */
+        .reactor-widget .reactor-switch__thumb::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80px;
+            height: 80px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, #00f0ff22 0%, transparent 60%), radial-gradient(circle, #7bffb522 0%, transparent 65%);
+            filter: blur(12px);
+            opacity: 0;
+            transition: 600ms ease;
+        }
+
+    /* OFF / ON text */
+    .reactor-widget .reactor-switch__state {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        font-size: 10px;
+        user-select: none;
+        z-index: 2;
+        transition: 600ms ease;
+    }
+
+    .reactor-widget .reactor-switch__state--off {
+        right: 16px;
+        color: #c7d0e0b5;
+    }
+
+    .reactor-widget .reactor-switch__state--on {
+        left: 16px;
+        color: #001116;
+        opacity: 0;
+    }
+
+    /* ON STATE */
+    .reactor-widget .reactor-switch input:checked + label {
+        border-color: #ffffff20;
+        box-shadow: 0 0 14px #00f0ff33, 0 0 30px #7bffb533, inset 0 8px 18px #ffffff18, 0 10px 28px #0009;
+    }
+
+        .reactor-widget .reactor-switch input:checked + label .reactor-switch__core {
+            background: linear-gradient(90deg, #00f0ff, #7bffb5, #6a7dff);
+            box-shadow: inset 0 0 0 1px #ffffff18, inset 0 0 20px #00f0ff44;
+        }
+
+        /* move thumb */
+        .reactor-widget .reactor-switch input:checked + label .reactor-switch__thumb {
+            left: 70px; /* PERFECT for width=120px */
+            background: radial-gradient( circle at 30% 25%, #062a33 0%, #03161c 55%, #000b12 100% );
+            box-shadow: 0 8px 18px #000c, 0 0 14px #00f0ff55, inset 0 0 12px #00f0ff66, inset -6px -9px 16px #00ffd455;
+        }
+
+            .reactor-widget
+            .reactor-switch
+            input:checked + label
+            .reactor-switch__thumb::after {
+                opacity: 1;
+            }
+
+        /* switch text visibility */
+        .reactor-widget
+        .reactor-switch
+        input:checked + label
+        .reactor-switch__state--off {
+            opacity: 0;
+        }
+
+        .reactor-widget
+        .reactor-switch
+        input:checked + label
+        .reactor-switch__state--on {
+            opacity: 1;
+        }
+
+    /* focus */
+    .reactor-widget .reactor-switch input:focus-visible + label {
+        outline: 2px solid #ffffff44;
+        outline-offset: 4px;
+    }
+
+</style>
+
+
+
+
