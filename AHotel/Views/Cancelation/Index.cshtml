@@ -4,11 +4,37 @@
 
 <button onclick="Create()" class="btn  f-secondary text-center">ایجاد</button>
 
+<div id="DataContainer">
+
+</div>
 
 @section Scripts{
 	<script>
 
 		let counter = 0;
+
+
+
+		document.addEventListener("DOMContentLoaded", async function () {
+			await Load();
+		});
+
+
+
+		async function GetList(){
+				 
+				var response = await fetch("/Cancelation/List");
+				if(response.ok) {
+					 var res = await response.text();
+						 var container = document.getElementById("DataContainer");
+						 container.innerHTML = res;
+
+				}
+		}
+
+
+
+
 
 
 			async function Create(){
@@ -33,7 +59,7 @@
 							  await PostForm('/Cancelation/CreatePolicy' , formData);
 
 									  $('#MyModal').modal('hide');
-
+									await GetList();
 		}
 
 
@@ -67,6 +93,22 @@
 				 ruleContainer.removeChild(lastChild);
 				 counter --;
 			 }
+		}
+
+
+
+		  function Remove(id)
+		{
+			var func = () => {
+				const data = {
+					Id : id,
+				};
+
+				  PostJson("Cancelation/Delete" , data , () => GetList());
+
+			}
+				DeleteWithSwal(func);
+
 		}
 
 
