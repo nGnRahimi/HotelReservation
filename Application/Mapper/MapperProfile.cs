@@ -1,5 +1,7 @@
 ﻿
+using Application.Features.Search.Dto;
 using AutoMapper;
+using Domain.Models.Hotels;
 using System;
 using System.Collections.Generic;
 using System.IO.Compression;
@@ -15,7 +17,8 @@ namespace Application.Mapper
     { 
         public MapperProfile() 
         {
-            
+            CreateMap<Hotel , HotelInfoDto>()
+                .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.HotelGalleries.Select(g => g.Path).ToList()));
         }
     }
 }
