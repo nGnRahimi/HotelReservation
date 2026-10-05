@@ -25,9 +25,23 @@ namespace AAReserve.Controllers
             });
 
             ViewBag.rooms = rooms;
-
+            ViewBag.hotelId = hotelId;
+            ViewBag.from = from;
+            ViewBag.to = to;
 
             return View(res);
         }
-    }
+
+
+
+
+        public async Task<IActionResult> RoomReserve(SelectedRoomQuery query)
+        {
+           
+
+            return View();
+
+
+        }
+        }
 }

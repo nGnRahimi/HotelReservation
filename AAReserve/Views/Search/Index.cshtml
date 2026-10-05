@@ -62,14 +62,35 @@
 
 <div class="our_room">
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="titlepage">
-                    <p class="margin_0">اتاق های خود را انتخاب کنید</p>
+       <form asp-action="RoomReserve" method="get">
+           <input type="hidden" , value="@ViewBag.from" name="from" />
+            <input type="hidden" , value="@ViewBag.to" name="to" />
+            <input type="hidden" , value="@ViewBag.hotelId" name="hotelId" />
+            <div id="stickyDiv" class="d-flex justify-content-center">
+                <div class="d-flex p-3" dir="rtl">
+                    <div class="d-flex mx-2">
+                        <span class="text-right">از</span>
+
+                        <input class="form-control example1 mr-2" name="from" placeholder="@ViewBag.from" disabled>
+                    </div>
+                    <div class="d-flex mx-2">
+                        <span class="text-right">تا</span>
+
+                        <input class="form-control example1 mr-2" name="to" placeholder="@ViewBag.to" disabled>
+                    </div>
+
+                    <div class="mx-2">
+                        <button type="submit" class="btn btn-success">رزرو</button>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </di>
+
+           
+
         <div class="row" dir="rtl">
+                    @{
+                            int i = 0;
+                        }
             @foreach(var item in Rooms)
             {
                 <div class="col-md-4 col-sm-6">
@@ -86,16 +107,91 @@
                                 <h4 class="">تعداد تخت اضافه :<span>@item.Extra</span> </h4>
                             </div>
                             <div class="mt-2" style="display: flex; justify-content: space-between;" dir="rtl">
-                                <a class="btn btn-danger text-light">انتخاب</a>
+                                <div class="number">
+                                    <span onclick="RemoveRoom(@item.RoomId , @item.Qty)" class="minus btn btn-danger text-center">-</span>
+                                    <span class="mx-2" id="RoomSpan_@item.RoomId">0</span>
+                                    <input type="hidden"  value="0" id="RoomQty_@item.RoomId" name="Rooms[@i].Qty" />
+                                            <input type="hidden" value="@item.RoomId"  name="Rooms[@i].RoomId" />
+                                    <span onclick="AddRoom(@item.RoomId , @item.Qty)" class="plus btn btn-danger text-center">+</span>
+                                </div>
                                 <h4 class="">@item.Price.ToString("N0") تومان</h4>
 
                             </div>
                         </div>
                     </div>
                 </div>
+                            i++;
+                        }
+       
+        </div>
+        </form>
+    </div>
+</div>
+
+
+<style>
+    .sticky {
+        position : fixed;
+        top : 0;
+        left :0;
+        width : 100%;
+        z-index : 1000;
+    }
+</style>
+
+
+@section Scripts{
+<script>
+
+    function AddRoom(roomId , qty)
+    {
+        const span = document.getElementById("RoomSpan_" + roomId );
+        const input = document.getElementById("RoomQty_" + roomId);
+
+            if(input.value < qty){
+                     input.value++;
+                span.innerHTML = input.value;
+            }
+       
+    }
+
+
+
+            function RemoveRoom(roomId , qty)
+            {
+
+                 const span = document.getElementById("RoomSpan_" + roomId );
+            const input = document.getElementById("RoomQty_" + roomId);
+
+                if(input.value > 0){
+                         input.value--;
+                    span.innerHTML = input.value;
+                }
+
 
             }
 
-        </div>
-    </div>
-</div>
+
+
+            window.onscroll = function () { makeSticky() };
+
+            const stickyDiv = document.getElementById("stickyDiv");
+            const stickyOffset = stickyDiv.offsetTop;
+
+            function makeSticky()
+            {
+                if (window.pageYOffset >= stickyOffset)
+                {
+                    stickyDiv.classList.add("sticky");
+                }
+                else {
+                    stickyDiv.classList.remove("sticky");
+                }
+            }
+
+
+
+</script>
+
+}
+
