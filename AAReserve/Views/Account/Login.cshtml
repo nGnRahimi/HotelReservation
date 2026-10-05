@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="back_re">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="title">
+                    <h2> لاگین </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5" id="register">
+    <div class="row " dir="rtl">
+        <div class="col-12 col-md-6">
+            <h2 class="text-right">‌لاگین</h2>
+            <p class="text-right">اکانت نداری؟ : <a asp-action="Register" asp-controller="Account" class="text-info">ثبت‌نام</a></p>
+            <form asp-action="Login" method="POST">
+                <div class="mb-3">
+                    <label for="registerEmail" class="form-label">ایمیل</label>
+                    <input type="email" class="form-control" id="registerEmail" name="email" placeholder="ایمیل خود را وارد کنید" required>
+                </div>
+                <div class="mb-3">
+                    <label for="registerPassword" class="form-label">رمز عبور</label>
+                    <input type="password" class="form-control" id="registerPassword" name="password" placeholder="رمز عبور" required>
+                </div>
+                <div class="mb-3">
+                    <label for="registerPassword" class="form-label">تکرار رمز عبور</label>
+                    <input type="password" class="form-control" id="registerPassword" name="ConfirmPassword" placeholder="رمز عبور" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100">‌ورود</button>
+            </form>
+        </div>
+    </div>
+</div>
+

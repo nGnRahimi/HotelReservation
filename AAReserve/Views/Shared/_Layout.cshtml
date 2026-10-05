@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Domain.Models.Users
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> _signInManager
+@inject UserManager<User> _userManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- basic -->
@@ -23,6 +27,7 @@
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="~/css/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://unpkg.com/persian-datepicker@1.2.0/dist/css/persian-datepicker.css" />
+
     <!-- Tweaks for older IEs-->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
@@ -70,9 +75,28 @@
                                     <li class="nav-item">
                                         <a class="nav-link" asp-action="Contact" asp-controller="Home">تماس با ما</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="contact.html">ورود / ثبت نام</a>
-                                    </li>
+
+
+                                    @if (_signInManager.IsSignedIn(User))
+                                    {
+                                        <li class="nav-item">
+                                            <a asp-action="Index" asp-controller="Profile" class="nav-link">پنل کاربری</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a asp-action="Logout" asp-controller="Account" class="nav-link">خروج</a>
+                                        </li>
+                                        @*                                         <li class="nav-item">
+                                            <form asp-action="Logout" asp-controller="Account" method="post" id="logoutForm" class="navbar-right">
+                                                <button type="submit" class="nav-link">خروج</button>
+                                            </form>
+                                        </li> *@
+                                    }
+                                    else
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="Register" asp-controller="Account">ورود / ثبت نام</a>
+                                        </li>
+                                    }
                                 </ul>
                             </div>
                         </nav>
@@ -85,7 +109,8 @@
     <!-- end header -->
     <!-- banner -->
     @RenderBody()
-   
+
+
     <!-- end contact -->
     <!--  footer -->
     <footer>
@@ -137,7 +162,9 @@
     <script src="~/js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="~/js/custom.js"></script>
     <script src="https://unpkg.com/persian-date@1.1.0/dist/persian-date.js"></script>
-    <script src=" https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.js"></script>
+    <script src="https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
+
