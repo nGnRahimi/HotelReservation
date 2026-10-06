@@ -37,9 +37,9 @@ namespace AAReserve.Controllers
 
         public async Task<IActionResult> RoomReserve(SelectedRoomQuery query)
         {
-           
 
-            return View();
+            var res = await _mediator.Send(query);
+            return View(res);
 
 
         }

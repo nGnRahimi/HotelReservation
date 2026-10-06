@@ -1,0 +1,179 @@
+﻿@using Application.Features.Search.Dto
+
+@{
+    ViewData["Title"] = "RoomReserve";
+}
+
+@model List<SearchRoomDto>
+
+<div class="back_re">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="title">
+                    @if (Model.Count > 0)
+                    {
+                        <h2>@Model[0].HotelName</h2>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+
+
+    <!-- جزئیات خرید -->
+    <div class="row" dir="rtl">
+
+        <div class="col-md-8">
+            <div class="card">
+
+                @foreach (var item in Model)
+                {
+                    <div>
+                        <div>
+                            <div style="display: flex;">
+                                <img src="/api/file/GetFile?fileName=@item.Img" alt="#" width="120" />
+                                <div class="mr-3">
+                                    <h3 class="text-right"> @item.RoomName </h3>
+
+                                    <div class="number">
+                                        <span class="minus btn btn-danger text-center">-</span>
+                                        <span class="mx-2">0</span>
+                                        <span class="plus btn btn-danger text-center">+</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <table dir="rtl" class="table table-striped mt-3 text-right">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"> </th>
+                                        <th scope="col">قیمت اتاق</th>
+                                        <th scope="col">قیمت تخت اضافه</th>
+                                        <th scope="col">ظرفیت</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var daily in item.Details)
+                                    {
+                                        <tr>
+                                            <th scope="row">@daily.DateVal</th>
+                                            <td>@daily.Price</td>
+                                            <td>@daily.BedPrice</td>
+                                            <td>@daily.Qty</td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <h5 class="mt-3 text-right">دفترچه مسافران</h5>
+                        <form dir="rtl">
+                            <div class="mb-3">
+                                <label for="name" class="form-label text-right">نام</label>
+                                <input type="text" class="form-control" id="name" placeholder="نام">
+                            </div>
+                            <div class="mb-3">
+                                <label for="lastname" class="form-label">نام خانوادگی</label>
+                                <input type="text" class="form-control" id="lastname" placeholder="نام خانوادگی">
+                            </div>
+                            <div class="mb-3">
+                                <label for="nationalId" class="form-label">کد ملی</label>
+                                <input type="text" class="form-control" id="nationalId" placeholder="کد ملی">
+                            </div>
+                        </form>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+        <div class="col-md-4" id="stickyDiv">
+            <div class="card">
+                <h5 class="reservation-summary text-right">جزئیات خرید</h5>
+                <p class="text-right">۱ اتاق x ۱ شب</p>
+                <div class="price">۹۹,۷۴۴,۷۵۰ ریال</div>
+                <button class="btn btn-primary w-100 mt-2">تایید و ادامه</button>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+
+<style>
+    .card {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    .reservation-summary {
+        font-size: 18px;
+        color: #000;
+    }
+
+    .price {
+        color: green;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+    }
+
+    .rules {
+        margin-top: 20px;
+    }
+
+    .counterInput {
+        height: 36px;
+        width: 50px;
+        text-align: center;
+        font-size: 26px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+
+    .sticky {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000; /* Make sure it's on top */
+    }
+</style>
+
+
+
+@section Scripts {
+    <script>
+
+
+        window.onscroll = function () { makeSticky() };
+
+        const stickyDiv = document.getElementById("stickyDiv");
+        const stickyOffset = stickyDiv.offsetTop;
+
+        function makeSticky() {
+            if (window.pageYOffset >= stickyOffset) {
+                stickyDiv.classList.add("sticky");
+            } else {
+                stickyDiv.classList.remove("sticky");
+            }
+        }
+
+
+    </script>
+}

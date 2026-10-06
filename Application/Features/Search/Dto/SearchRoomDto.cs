@@ -10,6 +10,7 @@ namespace Application.Features.Search.Dto
         public int Extra {  get; set; }
         public long Price { get; set; }
         public int Qty { get; set; }
+        public string HotelName { get; set; }
         public List<DailySearchRoom> Details { get; set; }
 
         public SearchRoomDto()
