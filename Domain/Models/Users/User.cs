@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Domain.Models.Reservation;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,6 @@ namespace Domain.Models.Users
 
         public Hotels.Hotel Hotel { get; set; }
 
+        public ICollection<Reserve>? Reserves { get; set; }
     }
 }

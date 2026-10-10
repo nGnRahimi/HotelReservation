@@ -4,6 +4,7 @@ using Domain.Models.Capacities;
 using Domain.Models.HotelGalleries;
 using Domain.Models.Hotels;
 using Domain.Models.Prices;
+using Domain.Models.Reservation;
 using Domain.Models.Roles;
 using Domain.Models.Rooms;
 using Domain.Models.Users;
@@ -43,6 +44,10 @@ namespace Infrastructure
         public DbSet<RoomPriceHistory> RoomPriceHistories { get; set; }
         public DbSet<CancelationPolicy> CancelationPolicies { get; set; }
         public DbSet<CancelationRule> CancelationRules { get; set; }
+        public DbSet<Reserve> Reserves { get; set; }
+        public DbSet<ReserveDetail> ReserveDetails { get; set; }
+        public DbSet<ReserveDailyDetail> ReserveDailyDetails { get; set; }
+        public DbSet<ReserveGuest> ReserveGuests { get; set; }
 
         public async Task<int> SaveEntitiesAsync(CancellationToken cancellationToken = default)
         {

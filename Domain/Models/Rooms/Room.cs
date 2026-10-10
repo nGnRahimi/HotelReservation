@@ -1,6 +1,7 @@
 ﻿using Domain.BaseEntity;
 using Domain.Models.Hotels;
 using Domain.Models.Prices;
+using Domain.Models.Reservation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace Domain.Models.Rooms
         public Hotel Hotel { get; set; }
         public ICollection<RoomPrice>? RoomPrices { get; set; }
         public ICollection<RoomPriceHistory>? RoomPriceHistories { get; set; }
+        public ICollection<ReserveDetail>? ReserveDetails { get; set; }
 
     }
 }

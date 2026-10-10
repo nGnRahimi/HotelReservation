@@ -1,6 +1,7 @@
 ﻿using Domain.BaseEntity;
 using Domain.Models.Cancelation;
 using Domain.Models.HotelGalleries;
+using Domain.Models.Reservation;
 using Domain.Models.Rooms;
 using Domain.Models.Users;
 using System;
@@ -25,6 +26,7 @@ namespace Domain.Models.Hotels
         public ICollection<HotelGallery>? HotelGalleries { get; set; }
         public ICollection<Room>? Rooms { get; set; }
         public ICollection<CancelationPolicy>? CancelationPolicies { get; set; }
+        public ICollection<Reserve>? Reserves { get; set; }
 
     }
 }
