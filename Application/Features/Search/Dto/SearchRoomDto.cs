@@ -9,6 +9,7 @@ namespace Application.Features.Search.Dto
         public string Img { get; set; }
         public int Extra {  get; set; }
         public long Price { get; set; }
+        public long BedPrice { get; set; }
         public int Qty { get; set; }
         public string HotelName { get; set; }
         public List<DailySearchRoom> Details { get; set; }

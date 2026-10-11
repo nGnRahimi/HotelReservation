@@ -1,4 +1,6 @@
 ﻿using Application.Features.Search.Query;
+using Domain.Models.Hotels;
+using Domain.Models.Rooms;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +15,9 @@ namespace AAReserve.Controllers
             _mediator = mediator;
         }
 
-        public async Task<IActionResult> Index(string from , string to , int hotelId)
+        public async Task<IActionResult> Index(string from, string to, int hotelId)
         {
-            var res = await _mediator.Send(new GetHotelInfoQuery() {Id = hotelId});
+            var res = await _mediator.Send(new GetHotelInfoQuery() { Id = hotelId });
 
             var rooms = await _mediator.Send(new SearchRoomQuery()
             {
@@ -23,6 +25,7 @@ namespace AAReserve.Controllers
                 From = from,
                 To = to,
             });
+
 
             ViewBag.rooms = rooms;
             ViewBag.hotelId = hotelId;
@@ -34,14 +37,13 @@ namespace AAReserve.Controllers
 
 
 
-
         public async Task<IActionResult> RoomReserve(SelectedRoomQuery query)
         {
-
             var res = await _mediator.Send(query);
+            ViewBag.hotelId = query.HotelId;
+            ViewBag.from = query.From;
+            ViewBag.to = query.To;
             return View(res);
-
-
         }
-        }
+    }
 }

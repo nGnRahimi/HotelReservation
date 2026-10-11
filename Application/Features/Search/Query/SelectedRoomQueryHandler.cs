@@ -108,6 +108,7 @@ namespace Application.Features.Search.Query
                         }
 
                         roomDt.Price = roomDt.Details.Sum(a => a.Price);
+                        roomDt.BedPrice = roomDt.Details.Sum(a => a.BedPrice);
                         roomDt.Qty = roomDt.Details.Min(a => a.Qty);
 
                         data.Add(roomDt);
