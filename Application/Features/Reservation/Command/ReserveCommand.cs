@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Reservation.Command
 {
-    public class ReserveCommand : BaseCommandRequest, IRequest<bool>
+    public class ReserveCommand : BaseCommandRequest, IRequest<int>
     {
         public int ToHotelId { get; set; }
         public string From { get; set; }

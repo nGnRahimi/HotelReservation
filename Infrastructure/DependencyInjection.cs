@@ -3,6 +3,7 @@ using Domain.Models.Capacities;
 using Domain.Models.HotelGalleries;
 using Domain.Models.Hotels;
 using Domain.Models.Prices;
+using Domain.Models.Reservation;
 using Domain.Models.Rooms;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,7 @@ namespace Infrastructure
             services.AddScoped<IRoomPriceRepository, RoomPriceRepository>();
             services.AddScoped<IRoomCapacityRepository, RoomCapacityRepository>();
             services.AddScoped<ICancelationRepository, CancelationRepository>();
+            services.AddScoped<IReserveRepository, ReserveRepository>();
             return services;
 
 
