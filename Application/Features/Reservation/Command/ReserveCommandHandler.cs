@@ -62,7 +62,7 @@ namespace Application.Features.Reservation.Command
                 HotelId = request.ToHotelId,
                 IsCanceled = false,
                 ReserveCreate = DateTime.Now,
-                Status = Domain.Models.Reservation.Enum.ReserveStatus.Book,
+                Status = Domain.Models.Reservation.Enum.ReserveStatus.Free,
                 UserId = request.UserId.Value,
                 CancelAmount = 0,
             };

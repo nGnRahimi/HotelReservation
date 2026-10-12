@@ -27,6 +27,8 @@ try {
 
     if (response.ok) {
         UseSwal("success", "عملیات با موفقیت انجام شد");
+        console.log(result)
+        return result;
 
     } else {
         UseSwal("error", result.details);

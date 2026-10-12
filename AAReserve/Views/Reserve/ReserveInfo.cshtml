@@ -1,0 +1,99 @@
+﻿@using Application.Common.Extentions
+@using Application.Features.Reservation.Dto
+
+@{
+    ViewData["Title"] = "ReserveInfo";
+}
+
+@model ReserveInfoDto
+
+<div dir="rtl" class="container text-right mt-5">
+    <h2 class="mb-4">جزئیات رزرو</h2>
+
+    <!-- General Reserve Info -->
+    <div class="card">
+        <div class="card-header">
+            اطلاعات رزرو
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">هتل: @Model.HotelName</h5>
+            <p class="card-text"><strong>تاریخ شروع رزرو:</strong> @Model.FromStr  </p>
+            <p class="card-text"><strong>تاریخ پایان رزرو:</strong> @Model.ToStr  </p>
+            <p class="card-text"><strong>قیمت کل:</strong> @Model.TotalPrice ریال</p>
+            <p class="card-text"><strong>وضعیت:</strong> تایید شده</p>
+            <p class="card-text"><strong>تاریخ ایجاد رزرو:</strong> @Model.CreateStr  </p>
+            @if (Model.IsCanceled)
+            {
+                <p class="card-text"><strong>لغو شده:</strong> بله</p>
+
+            }
+            else
+            {
+                <p class="card-text"><strong>لغو شده:</strong> خیر</p>
+
+            }
+            <p class="card-text"><strong>مبلغ لغو:</strong> @Model.CancelAmount دلار</p>
+        </div>
+    </div>
+
+    <!-- Reserve Details Info -->
+    <div class="mt-4">
+        <h4>جزئیات اتاق</h4>
+        @foreach (var room in Model.Rooms)
+        {
+            <div class="card p-4 mb-3">
+                <div class="card-header bg-info">
+                    @room.RoomName
+                </div>
+                <div class="card-body">
+                    <p><strong>شماره اتاق:</strong> @room.RoomId</p>
+                    <p><strong>قیمت:</strong> @room.Price ریال</p>
+                    <p><strong>قیمت تخت:</strong> @room.BedPrice ریال</p>
+                    <p><strong>تعداد تخت اضافی:</strong> @room.NumberOfExtraBed</p>
+                </div>
+
+                <h4>میهمان‌ها</h4>
+                @foreach (var guest in room.Guests)
+                {
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <p><strong>نام میهمان:</strong> @guest.FName @guest.LName</p>
+                            <p><strong>کد ملی:</strong> @guest.NationalCode</p>
+                        </div>
+                    </div>
+                }
+
+
+
+                <h4>جزئیات قیمت روزانه</h4>
+
+                <table dir="rtl" class="table table-striped mt-3 text-right">
+                    <thead>
+                        <tr>
+                            <th scope="col"> </th>
+                            <th scope="col">قیمت اتاق</th>
+                            <th scope="col">قیمت تخت اضافه</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var daily in room.Dailies)
+                        {
+                            <tr>
+                                <th scope="row">@daily.DateVal.ToPersianDate()</th>
+                                <td>@daily.Price.ToString("N0")</td>
+                                <td>@daily.BedPrice.ToString("N0")</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+        }
+
+
+
+
+    </div>
+</div>
+

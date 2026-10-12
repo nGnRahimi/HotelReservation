@@ -11,5 +11,6 @@ namespace Domain.Models.Reservation.Enum
         Free = 0,
         Book = 1,
         Cancel = 2,
+        Lock = 4,
     }
 }

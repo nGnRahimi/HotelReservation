@@ -1,5 +1,4 @@
-﻿
-@using Application.Common.Extentions
+﻿@using Application.Common.Extentions
 @using Application.Features.Search.Dto
 
 @{
@@ -28,10 +27,11 @@
 
 
     <!-- جزئیات خرید -->
-    <form asp-action="Book" asp-controller="Reserve">
-        <div class="row" dir="rtl">
+    <div class="row" dir="rtl">
 
-            <div class="col-md-8">
+        <div class="col-md-8">
+            <form id="reserveForm" asp-action="Book" asp-controller="Reserve">
+
                 <div class="card">
 
                     <input type="hidden" value="@ViewBag.from" name="from" />
@@ -106,20 +106,21 @@
 
 
                 </div>
-            </div>
-            <div class="col-md-4" id="stickyDiv">
-                <div class="card">
-                    <h5 class="reservation-summary text-right">جزئیات خرید</h5>
-                    <p class="text-right">@Model.Count() اتاق x @Model[0].Details.Count() شب</p>
-                    <div id="totalPrice" class="price">@Model.Sum(a => a.Price).ToString("N0") ریال</div>
-                    <input type="hidden" value="@Model.Sum(a => a.Price)" id="totalPriceInput" />
-                    <button type="submit" class="btn btn-primary w-100 mt-2">تایید و ادامه</button>
-                </div>
-            </div>
-
+            </form>
 
         </div>
-    </form>
+        <div class="col-md-4" id="stickyDiv">
+            <div class="card">
+                <h5 class="reservation-summary text-right">جزئیات خرید</h5>
+                <p class="text-right">@Model.Count() اتاق x @Model[0].Details.Count() شب</p>
+                <div id="totalPrice" class="price">@Model.Sum(a => a.Price).ToString("N0") ریال</div>
+                <input type="hidden" value="@Model.Sum(a => a.Price)" id="totalPriceInput" />
+                <button onclick="Reserve()" class="btn btn-primary w-100 mt-2">تایید و ادامه</button>
+            </div>
+        </div>
+
+
+    </div>
 
 </div>
 
@@ -174,6 +175,33 @@
 @section Scripts {
     <script>
 
+
+
+        async function Reserve()
+        {
+            const form = document.getElementById('reserveForm');
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/Reserve/Book', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+
+                    UseSwal("success", "عملیات با موفقیت انجام شد");
+                    window.location = "/Reserve/ReserveInfo/" + result
+
+                } else {
+                    UseSwal("error", result.details);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+            }
+
+        }
 
 
         function AddBed(i, extra , bedPrice) {

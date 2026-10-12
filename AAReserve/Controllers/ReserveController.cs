@@ -1,4 +1,5 @@
 ﻿using Application.Features.Reservation.Command;
+using Application.Features.Reservation.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,18 @@ namespace AAReserve.Controllers
         {
             var res = await _mediator.Send(command);
             return Ok(res);
+        }
+
+
+
+        public async Task<IActionResult> ReserveInfo(int id)
+        {
+            var query = new ReserveInfoQuery()
+            {
+                Id = id,
+            };
+            var res = await _mediator.Send(query);
+            return View(res);
         }
     }
 }
