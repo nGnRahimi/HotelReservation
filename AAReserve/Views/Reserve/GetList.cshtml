@@ -1,0 +1,114 @@
+﻿@using Application.Common.Pagination
+@using Application.Features.Reservation.Dto
+@using Domain.Models.Rooms
+@model PaginatedList<ReserveListDto>
+
+
+<div class="container text-right" dir="rtl">
+    <div class="card mt-2 shade h-100">
+
+        <div class="card-body">
+            <div class="input-group mb-3 col-6">
+                <input style="border-radius:5px" type="text" class="form-control example1" placeholder="از"
+                       id="fromInput" value="@ViewBag.from">
+
+                <input style="border-radius:5px" type="text" class="form-control mx-2 example1" placeholder="تا"
+                       id="toInput" value="@ViewBag.to">
+                <div class="input-group-append">
+                    <button onclick="search()" style="border-radius:5px" class="btn btn-outline-secondary  c-primary" type="button"
+                            id="button-addon2">
+                        <i class="fab fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">شناسه</th>
+                        <th scope="col">از تاریخ</th>
+                        <th scope="col">تا تاریخ</th>
+                        <th scope="col"> وضعیت</th>
+                        <th scope="col">نام مهمان</th>
+                        <th scope="col">اتاق ها</th>
+                        <th scope="col"> مبلغ</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.FromStr</td>
+                            <td>@item.ToStr</td>
+                            <td>@item.StatusStr</td>
+                            <td>@item.GuestName</td>
+                            <td>@item.Rooms</td>
+                            <td>@item.TotalPrice</td>
+                            <td>
+                                <a class="text-danger" asp-action="ReserveInfo" asp-controller="Reserve" asp-route-id="@item.Id"> مشاهده </a>
+                            </td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+
+        @{
+            int PageToShow = 1;
+            int startPage = Math.Max(1, Model.PageNumber - 1);
+            int endPage = Math.Min(Model.TotalPages, Model.PageNumber + 1);
+        }
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination secondary">
+
+                @if (Model.HasPreviousPage)
+                {
+                    <li onclick="GetList(@Model.PageNumber - 1)" class="page-item"><a class="page-link">قبلی</a></li>
+
+                }
+
+                @if (startPage > 1)
+                {
+                    <li onclick="GetList(1)" class="page-item "><a class="page-link">1</a></li>
+                    if (startPage > 2)
+                    {
+                        <li class="page-item disabled "><a class="page-link">...</a></li>
+
+                    }
+
+                }
+
+                @for (int i = startPage; i <= endPage; i++)
+                {
+                    <li onclick="GetList(@i)" class="page-item  @(i == Model.PageNumber ? "active" : "") "><a class="page-link">@i</a></li>
+                }
+
+
+                @if (endPage < Model.TotalPages)
+                {
+                    if (endPage < Model.TotalPages - 1)
+                    {
+                        <li class="page-item disabled "><a class="page-link">...</a></li>
+
+                    }
+                    <li onclick="GetList(@Model.TotalPages)" class="page-item "><a class="page-link">@Model.TotalPages</a></li>
+
+
+                }
+
+                @if (Model.HasNextPage)
+                {
+                    <li onclick="GetList(@Model.PageNumber + 1)" class="page-item "><a class="page-link">بعدی</a></li>
+
+                }
+            </ul>
+        </nav>
+    </div>
+
+
+</div>
+

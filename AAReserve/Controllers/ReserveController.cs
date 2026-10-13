@@ -1,5 +1,6 @@
 ﻿using Application.Features.Reservation.Command;
 using Application.Features.Reservation.Query;
+using Application.Features.Rooms.query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,6 +37,30 @@ namespace AAReserve.Controllers
             };
             var res = await _mediator.Send(query);
             return View(res);
+        }
+
+
+
+        public IActionResult ReserveList()
+        {
+            return View();
+        }
+
+
+        public async Task<IActionResult> GetList(int page = 1, string? search = null, string? from = null, string? to = null)
+        {
+            var res = await _mediator.Send(new GetReserveListQuery()
+            {
+                PageNumber = page,
+                PageSize = 4,
+                from = from,
+                to = to,
+                Search = search
+            });
+            ViewBag.search = search;
+            ViewBag.from = from;
+            ViewBag.to = to;
+            return PartialView(res);
         }
     }
 }
