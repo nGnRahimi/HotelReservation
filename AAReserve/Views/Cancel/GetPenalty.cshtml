@@ -1,0 +1,23 @@
+﻿@using Application.Features.Cancelation.Dto
+
+@model List<RuleDto>
+
+
+@if (Model != null && Model.Count > 0)
+{
+    @foreach (var rule in Model)
+    {
+        <div class="text-right">
+            <p>تا @rule.Hours ساعت قبل از ورود مهمان</p>
+            <p> مقدار @rule.RefundPercent درصد مبلغ رزرو بازپرداخت میشود</p>
+        </div>
+        <hr />
+    }
+}
+else
+{
+    <p>قوانین وجود ندارد</p>
+
+}
+
+

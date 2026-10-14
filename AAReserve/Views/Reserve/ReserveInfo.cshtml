@@ -1,4 +1,5 @@
-﻿@using Application.Common.Extentions
+﻿@using Application.Common.Extenstios
+@using Application.Common.Extentions
 @using Application.Features.Reservation.Dto
 
 @{
@@ -7,8 +8,17 @@
 
 @model ReserveInfoDto
 
+<style>
+    .container{
+    font-size : 20px;
+    }
+</style>
+
 <div dir="rtl" class="container text-right mt-5">
-    <h2 class="mb-4">جزئیات رزرو</h2>
+    <div class="d-flex mb-4 justify-content-between">
+        <h2 class="">جزئیات رزرو</h2>
+        <button onclick="Cancel(@Model.HotelId , @Model.Id)" class="btn btn-danger px-4"> کنسل </button>
+    </div>
 
     <!-- General Reserve Info -->
     <div class="card">
@@ -16,23 +26,34 @@
             اطلاعات رزرو
         </div>
         <div class="card-body">
-            <h5 class="card-title">هتل: @Model.HotelName</h5>
-            <p class="card-text"><strong>تاریخ شروع رزرو:</strong> @Model.FromStr  </p>
-            <p class="card-text"><strong>تاریخ پایان رزرو:</strong> @Model.ToStr  </p>
-            <p class="card-text"><strong>قیمت کل:</strong> @Model.TotalPrice ریال</p>
-            <p class="card-text"><strong>وضعیت:</strong> تایید شده</p>
-            <p class="card-text"><strong>تاریخ ایجاد رزرو:</strong> @Model.CreateStr  </p>
-            @if (Model.IsCanceled)
-            {
-                <p class="card-text"><strong>لغو شده:</strong> بله</p>
+            <h1 class="card-title">هتل: @Model.HotelName</h1>
+            <div class="row">
+                <div class="col-12 col-md-4">
+                    <p class="card-text"><strong>تاریخ شروع رزرو:</strong> @Model.FromStr  </p>
+                    <p class="card-text"><strong>تاریخ پایان رزرو:</strong> @Model.ToStr  </p>
+                </div>
+                <div class="col-12 col-md-4">
+                    <p class="card-text"><strong>قیمت کل:</strong> @Model.TotalPrice ریال</p>
+                    <p class="card-text"><strong>وضعیت:</strong> @Model.Status.GetDescription()</p>
+                </div>
+                <div class="col-12 col-md-4">
+                    <p class="card-text"><strong>تاریخ ایجاد رزرو:</strong> @Model.CreateStr  </p>
+                    @if (Model.IsCanceled)
+                    {
+                        <p class="card-text"><strong>لغو شده:</strong> اره</p>
 
-            }
-            else
-            {
-                <p class="card-text"><strong>لغو شده:</strong> خیر</p>
+                    }
+                    else
+                    {
+                        <p class="card-text"><strong>لغو شده:</strong> خیر</p>
 
-            }
-            <p class="card-text"><strong>مبلغ لغو:</strong> @Model.CancelAmount دلار</p>
+                    }
+                    <p class="card-text"><strong>مبلغ لغو:</strong> @Model.CancelAmount تومان</p>
+                </div>
+            </div>
+
+
+
         </div>
     </div>
 
@@ -42,7 +63,7 @@
         @foreach (var room in Model.Rooms)
         {
             <div class="card p-4 mb-3">
-                <div class="card-header bg-info">
+                <div class="card-header bg-light">
                     @room.RoomName
                 </div>
                 <div class="card-body">
@@ -97,3 +118,56 @@
     </div>
 </div>
 
+
+
+@section Scripts {
+    <script>
+
+        async function Cancel(hotelId , id) {
+
+            var response = await fetch("/Cancel/GetPenalty/" + hotelId);
+            if (response.ok) {
+                var res = await response.text();
+                Swal.fire({
+                    title: "میخوای رزرو کنسل شه؟",
+                    html : res,
+                    showDenyButton: true,
+                    confirmButtonText: "اره",
+                    denyButtonText: `نه`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Confirm(id)
+                    }
+                });
+            }
+
+        }
+
+
+        async function Confirm(id) {
+            const formData = new FormData();
+            formData.append("Id", id);
+            try {
+                const response = await fetch('/Cancel/ConfirmCancel', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+
+                    UseSwal("success", "عملیات با موفقیت انجام شد");
+                    window.location = "/Reserve/ReserveInfo/" + result
+
+                } else {
+                    UseSwal("error", result.details);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+            }
+
+        }
+
+
+    </script>
+}
