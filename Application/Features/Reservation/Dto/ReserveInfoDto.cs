@@ -11,6 +11,7 @@ namespace Application.Features.Reservation.Dto
 {
     public class ReserveInfoDto
     {
+        public int Id {  get; set; }
         public DateTime From { get; set; }
         public string FromStr { get { return From.ToPersianDate(); } }
         public DateTime To { get; set; }

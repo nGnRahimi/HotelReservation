@@ -24,6 +24,7 @@ namespace Application.Features.Reservation.Query
             var data = await _reserveRepository.Get(a => a.Enable && a.Id == request.Id)
                 .Select(s => new ReserveInfoDto()
                 {
+                    Id = s.Id,
                     From = s.From,
                     To = s.To,
                     HotelId = s.HotelId,
