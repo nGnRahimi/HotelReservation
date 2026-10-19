@@ -1,4 +1,5 @@
 ﻿@using Application.Features.Search.Dto
+
 @{
     ViewData["Title"] = "Index";
 
@@ -22,7 +23,7 @@
     <div class="container">
 
         <div class="row" dir="rtl">
-            @foreach(var item in Model.Images)
+            @foreach (var item in Model.Images)
             {
                 <div class="col-md-3 col-sm-6">
                     <div class="gallery_img">
@@ -30,7 +31,7 @@
                     </div>
                 </div>
             }
-           
+
         </div>
     </div>
 </div>
@@ -40,7 +41,7 @@
         <div class="row">
             <div class="col-md-12 text-right">
                 <h2>هتل @Model.Name</h2>
-                <span class="fa fa-star @(Model.Star >= 1 ? "checked" : "")"></span>
+                <span class="fa fa-star @(Model.Star >= 1 ? "checked" : "") "></span>
                 <span class="fa fa-star @(Model.Star >= 2 ? "checked" : "")"></span>
                 <span class="fa fa-star @(Model.Star >= 3 ? "checked" : "")"></span>
                 <span class="fa fa-star @(Model.Star >= 4 ? "checked" : "")"></span>
@@ -48,7 +49,7 @@
 
 
                 <p>
-                   @Model.Address
+                    @Model.Address
                 </p>
                 <p>
                     @Model.Phone
@@ -62,136 +63,138 @@
 
 <div class="our_room">
     <div class="container">
-       <form asp-action="RoomReserve" method="get">
-           <input type="hidden" , value="@ViewBag.from" name="from" />
-            <input type="hidden" , value="@ViewBag.to" name="to" />
-            <input type="hidden" , value="@ViewBag.hotelId" name="hotelId" />
+        <form asp-action="RoomReserve" method="get">
+            <input type="hidden" value="@ViewBag.from" name="from" />
+            <input type="hidden" value="@ViewBag.to" name="to" />
+            <input type="hidden" value="@ViewBag.hotelId" name="hotelId" />
             <div id="stickyDiv" class="d-flex justify-content-center">
                 <div class="d-flex p-3" dir="rtl">
                     <div class="d-flex mx-2">
                         <span class="text-right">از</span>
-
                         <input class="form-control example1 mr-2" name="from" placeholder="@ViewBag.from" disabled>
                     </div>
                     <div class="d-flex mx-2">
                         <span class="text-right">تا</span>
-
                         <input class="form-control example1 mr-2" name="to" placeholder="@ViewBag.to" disabled>
                     </div>
-
                     <div class="mx-2">
                         <button type="submit" class="btn btn-success">رزرو</button>
                     </div>
                 </div>
-            </di>
+            </div>
 
-           
+            <div class="row" dir="rtl">
 
-        <div class="row" dir="rtl">
-                    @{
-                            int i = 0;
-                        }
-            @foreach(var item in Rooms)
-            {
-                <div class="col-md-4 col-sm-6">
-                    <div id="serv_hover" class="room">
-                        <div class="room_img">
-                            <figure><imgsrc ="/api/file/GetFile?fileName=@item.Img" alt="#" /></figure>
-                        </div>
-                        <div class="bed_room">
-                            <h3 class="text-right">
-                               @item.RoomName
-                            </h3>
-                            <div class="mt-2" style="display: flex; justify-content: space-between;" dir="rtl">
-                                <h4 class="text-danger">@item.Qty اتاق باقیمانده</h4>
-                                <h4 class="">تعداد تخت اضافه :<span>@item.Extra</span> </h4>
+                @{
+                    int i = 0;
+                }
+                @foreach (var item in Rooms)
+                {
+                    <div class="col-md-4 col-sm-6">
+                        <div id="serv_hover" class="room">
+                            <div class="room_img">
+                                <figure><img src="/api/file/GetFile?fileName=@item.Img" alt="#" /></figure>
                             </div>
-                            <div class="mt-2" style="display: flex; justify-content: space-between;" dir="rtl">
-                                <div class="number">
-                                    <span onclick="RemoveRoom(@item.RoomId , @item.Qty)" class="minus btn btn-danger text-center">-</span>
-                                    <span class="mx-2" id="RoomSpan_@item.RoomId">0</span>
-                                    <input type="hidden"  value="0" id="RoomQty_@item.RoomId" name="Rooms[@i].Qty" />
-                                            <input type="hidden" value="@item.RoomId"  name="Rooms[@i].RoomId" />
-                                    <span onclick="AddRoom(@item.RoomId , @item.Qty)" class="plus btn btn-danger text-center">+</span>
+                            <div class="bed_room">
+                                <h3 class="text-right">
+                                    @item.RoomName
+                                </h3>
+                                <div class="mt-2" style="display: flex; justify-content: space-between;" dir="rtl">
+                                    <h4 class="text-danger">@item.Qty اتاق باقیمانده</h4>
+                                    <h4 class="">تعداد تخت اضافه :<span>@item.Extra</span> </h4>
                                 </div>
-                                <h4 class="">@item.Price.ToString("N0") تومان</h4>
+                                <div class="mt-2" style="display: flex; justify-content: space-between;" dir="rtl">
+                                    @if (@item.Qty == 0 || !item.Details.Min(a => a.State))
+                                    {
+                                        <h4 class="">ناموجود</h4>
+                                        <div class="number" style="display:none">
+                                            <span onclick="RemoveRoom(@item.RoomId , @item.Qty)" class="minus btn btn-danger text-center">-</span>
+                                            <span class="mx-2" id="RoomSpan_@item.RoomId">0</span>
+                                            <input type="hidden" value="0" id="RoomQty_@item.RoomId" name="Rooms[@i].Qty" />
+                                            <input type="hidden" value="@item.RoomId" name="Rooms[@i].RoomId" />
+                                            <span onclick="AddRoom(@item.RoomId , @item.Qty)" class="plus btn btn-danger text-center">+</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="number">
+                                            <span onclick="RemoveRoom(@item.RoomId , @item.Qty)" class="minus btn btn-danger text-center">-</span>
+                                            <span class="mx-2" id="RoomSpan_@item.RoomId">0</span>
+                                            <input type="hidden" value="0" id="RoomQty_@item.RoomId" name="Rooms[@i].Qty" />
+                                            <input type="hidden" value="@item.RoomId" name="Rooms[@i].RoomId" />
+                                            <span onclick="AddRoom(@item.RoomId , @item.Qty)" class="plus btn btn-danger text-center">+</span>
+                                        </div>
+                                    }
 
+                                    <h4 class="">@item.Price.ToString("N0") تومان</h4>
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                            i++;
-                        }
-       
-        </div>
+
+                    i++;
+                }
+
+            </div>
         </form>
     </div>
 </div>
 
-
 <style>
     .sticky {
-        position : fixed;
-        top : 0;
-        left :0;
-        width : 100%;
-        z-index : 1000;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000; /* Make sure it's on top */
     }
 </style>
 
-
-@section Scripts{
-<script>
-
-    function AddRoom(roomId , qty)
-    {
-        const span = document.getElementById("RoomSpan_" + roomId );
-        const input = document.getElementById("RoomQty_" + roomId);
-
-            if(input.value < qty){
-                     input.value++;
-                span.innerHTML = input.value;
-            }
-       
-    }
+@section Scripts {
+    <script>
 
 
-
-            function RemoveRoom(roomId , qty)
-            {
-
-                 const span = document.getElementById("RoomSpan_" + roomId );
+        function AddRoom(roomId , qty)
+        {
+            const span = document.getElementById("RoomSpan_" + roomId);
             const input = document.getElementById("RoomQty_" + roomId);
 
-                if(input.value > 0){
-                         input.value--;
-                    span.innerHTML = input.value;
-                }
-
-
+            if (input.value < qty) {
+                input.value++;
+                span.innerHTML = input.value;
             }
 
 
+        }
 
-            window.onscroll = function () { makeSticky() };
 
-            const stickyDiv = document.getElementById("stickyDiv");
-            const stickyOffset = stickyDiv.offsetTop;
+        function RemoveRoom(roomId, qty) {
+            const span = document.getElementById("RoomSpan_" + roomId);
+            const input = document.getElementById("RoomQty_" + roomId);
 
-            function makeSticky()
-            {
-                if (window.pageYOffset >= stickyOffset)
-                {
-                    stickyDiv.classList.add("sticky");
-                }
-                else {
-                    stickyDiv.classList.remove("sticky");
-                }
+            if (input.value > 0) {
+                input.value --;
+                span.innerHTML = input.value;
             }
+        }
 
 
 
-</script>
 
+        window.onscroll = function () { makeSticky() };
+
+        const stickyDiv = document.getElementById("stickyDiv");
+        const stickyOffset = stickyDiv.offsetTop;
+
+        function makeSticky() {
+            if (window.pageYOffset >= stickyOffset) {
+                stickyDiv.classList.add("sticky");
+            } else {
+                stickyDiv.classList.remove("sticky");
+            }
+        }
+
+
+    </script>
 }
-

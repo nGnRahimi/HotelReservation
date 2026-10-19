@@ -17,6 +17,12 @@ namespace AAReserve.Controllers
 
         public async Task<IActionResult> Index(string from, string to, int hotelId)
         {
+
+            if (hotelId == 0 || String.IsNullOrEmpty(from) || String.IsNullOrEmpty(to))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var res = await _mediator.Send(new GetHotelInfoQuery() { Id = hotelId });
 
             var rooms = await _mediator.Send(new SearchRoomQuery()
@@ -39,6 +45,11 @@ namespace AAReserve.Controllers
 
         public async Task<IActionResult> RoomReserve(SelectedRoomQuery query)
         {
+            if (query.Rooms.Sum(a => a.Qty) < 1)
+            {
+                return RedirectToAction("Index", "Search", new { hotelId = query.HotelId, from = query.From, to = query.To });
+            }
+
             var res = await _mediator.Send(query);
             ViewBag.hotelId = query.HotelId;
             ViewBag.from = query.From;

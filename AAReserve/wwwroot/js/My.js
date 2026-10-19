@@ -11,7 +11,7 @@
         }
     });
     Toast.fire({
-        icon: icon,
+        icon: "",
         title: text
     });
 }

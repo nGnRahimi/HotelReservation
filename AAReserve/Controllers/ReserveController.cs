@@ -1,6 +1,5 @@
 ﻿using Application.Features.Reservation.Command;
 using Application.Features.Reservation.Query;
-using Application.Features.Rooms.query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
