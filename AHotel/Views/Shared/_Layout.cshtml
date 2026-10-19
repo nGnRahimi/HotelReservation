@@ -3,7 +3,6 @@
 
 @inject SignInManager<User> _signInManager
 @inject UserManager<User> _userManager
-
 <!doctype html>
 <html class="no-js" lang="">
 
@@ -36,8 +35,19 @@
     <link rel="stylesheet" href="https://unpkg.com/persian-datepicker@1.2.0/dist/css/persian-datepicker.css" />
     <link rel="stylesheet" href="~/css/main.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="~/js/My.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <script src="~/js/my.js"></script>
+    <script>
+        window.onload = function()
+        {
+            var theme = localStorage.getItem("theme");
+            if(theme === 'dark')
+            {
+                document.body.classList.add("dark");
+            }
+        }
+    </script>
 </head>
 
 <body class="rtl persianumber">
@@ -51,8 +61,6 @@
                     <!-- <i class="material-Animation">menu</i> -->
                 </button>
                 <ul class="nav navbar-nav p-0">
-                   
-                    </li>
                     <li class="nav-item">
                         <img src="~/img/user-profile.jpg" alt="..."
                              class="rounded-circle screen-user-profile">
@@ -60,15 +68,11 @@
                     <li class="nav-item">
                         <div class="dropdown">
                             <button class="btn  dropdown-toggle m-0" type="button" id="dropdownMenu4"
-                                   
-                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                
-
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 @if (_signInManager.IsSignedIn(User))
-                                    {
-                                       @User.Identity?.Name 
-
-                                    }
+                                {
+                                    @User.Identity?.Name
+                                }
 
                             </button>
                             <div aria-labelledby="dropdownMenu4"
@@ -88,7 +92,7 @@
                                         <i class="fas fa-sign-out-alt c-main fa-sm mr-2"></i>خروج
                                     </button>
                                 </form>
-                               
+
                             </div>
                         </div>
                     </li>
@@ -104,54 +108,60 @@
             <div class="container-fluid side-bar-container ">
                 <header class="pb-0">
                     <a class="navbar-brand ">
-                        <object class="side-logo" data="~/svg/logo-8.svg" type="image/svg+xml">
-                        </object>
+                        <img class="side-logo" src="~/img/Farsi.svg" />
                     </a>
                 </header>
-                <p class="side-comment  fnt-mxs">گشت</p>
-                @* <li class="side a-collapse short m-2 pr-1 pl-1">
-                    <a href="./fa.html" class="side-item selected c-dark ">
-                        <i class="fas fa-language  mr-1"></i>فارسی <span class="badge badge-pill badge-success">جدید</span>
-                    </a>
+
+
+                <li class="side mt-3 a-collapse short ">
+                    <a asp-action="Index" asp-controller="Home" class="side-item "><i class="fas fa-fan fa-spin mr-2"></i>داشبورد</a>
                 </li>
-           *@
-        <li class="side a-collapse short ">
-            <a asp-action="Index" asp-controller="Home" class="side-item "><i class="fas fa-fan fa-spin mr-2"></i>داشبورد</a>
-        </li>
-        <li class="side a-collapse short ">
-         <a asp-action="Index" asp-controller="Hotel" class="side-item "><i class="fas fa-icons  mr-2"></i>تنظیمات</a>
-        </li>
-                <li class="side a-collapse short ">
-                    <a asp-action="Index" asp-controller="Gallery" class="side-item "><i class="fas fa-icons  mr-2"></i>گالری</a>
+                <li class="side mt-2  a-collapse short ">
+                    <a asp-action="Index" asp-controller="Hotel" class="side-item "><i class="fas fa-wrench  mr-2"></i>تنظیمات</a>
                 </li>
-                <li class="side a-collapse short ">
-                    <a asp-action="Index" asp-controller="Rooms" class="side-item "><i class="fas fa-icons  mr-2"></i>اتاق ها</a>
+                <li class="side mt-2  a-collapse short ">
+                    <a asp-action="Index" asp-controller="Gallery" class="side-item "><i class="fas fa-image  mr-2"></i>گالری</a>
                 </li>
-                <li class="side a-collapse short ">
-                    <a asp-action="Index" asp-controller="RoomPrice" class="side-item "><i class="fas fa-icons  mr-2"></i>قیمت ها</a>
+                <li class="side mt-2  a-collapse short ">
+                    <a asp-action="Index" asp-controller="Rooms" class="side-item "><i class="fas fa-house-user  mr-2"></i>اتاق ها</a>
+                </li>
+                <li class="side mt-2  a-collapse short ">
+                    <a asp-action="Index" asp-controller="RoomPrice" class="side-item "><i class="fas fa-money-bill  mr-2"></i>قیمت ها</a>
+                </li>
+                <li class="side mt-2  a-collapse short ">
+                    <a asp-action="Index" asp-controller="RoomCapacity" class="side-item "><i class="fas fa-warehouse  mr-2"></i>ظرفیت ها</a>
                 </li>
 
-                <li class="side a-collapse short ">
-                    <a asp-action="Index" asp-controller="Cancelation" class="side-item "><i class="fas fa-icons  mr-2"></i>قوانین</a>
+                <li class="side mt-2  a-collapse short ">
+                    <a asp-action="Index" asp-controller="Cancelation" class="side-item "><i class="fas fa-ban  mr-2"></i>قوانین</a>
                 </li>
 
 
+                <li class="side mt-2 a-collapse short ">
+                    <a asp-action="Index" asp-controller="Reserve" class="side-item "><i class="fas fa-icons  mr-2"></i>رزرو ها</a>
+                </li>
 
-    </div>
 
-    </div>
-    <main class="bmd-layout-content">
-        <div class="container-fluid ">
-            @RenderBody()
-           
+            </div>
+
         </div>
-    </main>
+        <main class="bmd-layout-content">
+            <div class="container-fluid ">
+
+
+                @RenderBody()
+
+
+
+
+
+            </div>
+        </main>
+    </div>
 
     </div>
-    </div>
 
-
-    <div id="MyModal"   class="modal w-lg fade"  tabindex="-1" role="dialog"
+    <div id="MyModal" class="modal w-lg fade " tabindex="-1" role="dialog"
          aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog " role="document">
             <div class="modal-content card shade">
@@ -163,10 +173,10 @@
                 </div>
                 <div id="ModalBody" class="modal-body">
                 </div>
-               
             </div>
         </div>
     </div>
+
 
     <script src="~/js/vendor/modernizr.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -201,21 +211,21 @@
             }
         }(document, 'script', 'weatherwidget-io-js');
     </script>
-
     <script src="https://unpkg.com/persian-date@1.1.0/dist/persian-date.js"></script>
-    <script src=" https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js">
-    </script>
+    <script src="https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script src="~/js/main.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 
 </html>
 
 
 
-
-@* <!DOCTYPE html>
+@* 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -240,14 +250,12 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area
-
-="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
                 </div>
             </div>
-        </nav>f
+        </nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -257,7 +265,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2026 - AHotel - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - AHotel - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -266,4 +274,3 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html> *@
-

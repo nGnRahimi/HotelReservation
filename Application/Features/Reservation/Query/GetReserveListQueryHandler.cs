@@ -31,7 +31,8 @@ namespace Application.Features.Reservation.Query
                 from = request.from.ToMiladiDateTime();
                 to = request.to.ToMiladiDateTime();
             }
-            var data = await _reserveRepository.Get(a => a.Enable && a.UserId == request.UserId
+            var data = await _reserveRepository.Get(a => a.Enable &&
+                 (request.HotelId != null ? request.HotelId == a.HotelId : a.UserId == request.UserId)
                  && (from != null && to != null ? (a.ReserveCreate >= from && a.ReserveCreate <= to) : true))
                 .SearchQuery(request.Search)
                 .OrderByDescending(a => a.ReserveCreate)
