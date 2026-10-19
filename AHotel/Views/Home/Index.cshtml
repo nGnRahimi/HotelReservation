@@ -1,8 +1,90 @@
-﻿@{
+﻿@using Application.Features.Reservation.Dto
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@model MiniInfoDto
+
+<div class="row m-1 mt-4 mb-2">
+    <div class="col-xl-4 col-md-6 col-sm-6 p-2">
+        <div class="box-card text-right mini animate__animated animate__flipInY   ">
+            <i class="fab far fa-chart-bar b-first" aria-hidden="true"></i>
+            <span class="mb-1 c-first">رزرو ها</span>
+            <span>@Model.Reserve</span>
+        </div>
+    </div>
+    <div class="col-xl-4 col-md-6 col-sm-6 p-2">
+        <div class="box-card text-right mini animate__animated animate__flipInY    ">
+            <i class="fab far fa-clock b-second" aria-hidden="true"></i>
+            <span class="mb-1 c-second">کنسلی ها</span>
+            <span>@Model.Cancel</span>
+
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 col-sm-6 p-2">
+        <div class="box-card text-right mini animate__animated animate__flipInY   ">
+            <i class="fab far fa-gem b-forth" aria-hidden="true"></i>
+            <span class="mb-1 c-forth">درآمد</span>
+            <span>@Model.Price.ToString("N0")</span>
+
+        </div>
+    </div>
 </div>
+
+<div class="mt-4" id="DataContainer">
+</div>
+
+@section Scripts {
+    <script>
+
+
+        document.addEventListener("DOMContentLoaded", async function () {
+            await GetList(1);
+            LoadDatePicker()
+        });
+
+
+        async function GetList(page) {
+            const fromEl = document.getElementById("fromInput");
+            const fromTxt = fromEl == null ? "" : fromEl.value;
+            const toEl = document.getElementById("toInput");
+            const toTxt = toEl == null ? "" : toEl.value
+            var response = await fetch("/Reserve/GetList?page=" + page + "&from=" + fromTxt + "&to=" + toTxt);
+            if (response.ok) {
+                var res = await response.text();
+                var container = document.getElementById("DataContainer");
+                container.innerHTML = res;
+                LoadDatePicker();
+
+            }
+        }
+
+
+
+        async function search() {
+            const fromEl = document.getElementById("fromInput");
+            const fromTxt = fromEl == null ? "" : fromEl.value;
+            const toEl = document.getElementById("toInput");
+            const toTxt = toEl == null ? "" : toEl.value
+            var response = await fetch("/Reserve/GetList?from=" + fromTxt + " &to=" + toTxt);
+            if (response.ok) {
+                var res = await response.text();
+                var container = document.getElementById("DataContainer");
+                container.innerHTML = res;
+                LoadDatePicker();
+            }
+        }
+
+        function LoadDatePicker() {
+            $(".example1").pDatepicker({
+                initialValue: false,
+                format: 'YYYY/MM/DD',
+                autoClose: true
+
+            });
+        }
+
+    </script>
+}
+
