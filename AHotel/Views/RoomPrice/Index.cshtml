@@ -1,184 +1,186 @@
-﻿
-@{
-	ViewData["Title"] = "Index";
+﻿@{
+    ViewData["Title"] = "Index";
 }
-
-<button onclick="Create()" class="btn  f-secondary text-center">ایجاد بازه ی قیمت</button>
+<button onclick="Create()" class="btn  f-secondary text-center ">ایجاد بازه ی قیمت</button>
 
 <div class="card mt-2 shade ">
+
     <div class="card-body">
-      <div class="d-flex justify-content-between" style="align-items:baseline">
+        <div class="d-flex justify-content-between " style="align-items:baseline">
+            <div>
+                <button onclick="LastWeek()" class="btn f-third text-center ">هفته قبل</button>
+            </div>
+            <div class="form-group " style="width: 50%">
+                <select id="rooms" onchange="ChangeRooms()" style="width: 100%" name="rooms[]" multiple="multiple" class="form-control js-select" asp-items="@ViewBag.Rooms"></select>
+            </div>
+            <div>
+                <button onclick="NextWeek()" class="btn  f-third text-center ">هفته بعد</button>
+            </div>
 
-		  <div>
-				<button onclick="LastWeek()" class="btn  f-info text-center">هفته قبل</button>
-		  </div>
 
-			<div class="form-group " style="width: 50%">
-				<select id="rooms" onchange="ChangeRooms()" style="width: 100%" name="rooms[]" multiple="multiple" class="form-control js-select" asp-items="@ViewBag.Rooms"></select>
-
-			</div>
-
-
-			<div>
-				<button onclick="NextWeek()" class="btn  f-info text-center">هفته بعد</button>
-			</div>
-
-	  </div>
-       
+        </div>
     </div>
 
-	<div id="DataContainer"  class="px-4"  >
+    <div id="DataContainer" class="px-4">
+    </div>
 
-	</div>
+</div>
 
+<style>
+    .dark .select2-container--default .select2-selection--multiple {
+        background-color: #333;
+        border-color: #555;
+        color: white;
+    }
 
+    .dark .select2-dropdown {
+        background-color: #333;
+        color: white;
+    }
 
+    .dark .select2-selection__choice__display {
+        background-color: #333;
+        color: white;
+    }
 
+    .dark .select2-results__option {
+        background-color: #333;
+        color: white;
+    }
 
+    .dark .select2-results__option--highlighted {
+        background-color: #555;
+    }
+</style>
 
-   </div>
-
-
-@section Scripts{
-	<script>
-
-			 document.addEventListener("DOMContentLoaded", async function () {
-			await GetList("");
-			LoadSelect();
-		});
-
-
-
-		async function GetList(start , week){
-				 var rooms = $("#rooms").val();
-				var response = await fetch("/RoomPrice/List?start=" + start + "&week=" + week ,
-				  {
-			method: 'POST',
-			headers: {
-				'Content-Type':'application/json'
-			},
-			body : JSON.stringify(rooms)
-		});
-				if(response.ok) {
-					 var res = await response.text();
-						 var container = document.getElementById("DataContainer");
-						 container.innerHTML = res;
-
-				}
-		}
+@section Scripts {
+    <script>
 
 
 
-		async function Create()
-		{
-		   $('#MyModal').modal('show');
-
-			var response = await fetch("/RoomPrice/CreateView");
-			if(response.ok) {
-				 var res = await response.text();
-					 $('#MyModalBody').html(res);
-					  $('#ModalLabel').html("ایجاد بازه ی قیمت");
-					 LoadSelect();
-					  LoadDatePicker();
-			}
-		}
+        document.addEventListener("DOMContentLoaded", async function () {
+            await GetList("");
+            LoadSelect();
+        });
 
 
-
-		async function SendCreate()
-		{
-					 const form = document.getElementById('createForm');
-					 const formData = new formData(form);
-							  await PostForm('/RoomPrice/CreatePrice' , formData);
-								
-									  $('#MyModal').modal('hide');
-
-		  var date = document.getElementById("start").value;
-					await GetList(date , "")
-
-		}
+        async function GetList(start , week) {
+            var rooms = $("#rooms").val();
+            var response = await fetch("/RoomPrice/List?start=" + start + "&week=" + week,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(rooms)
+                });
+            if (response.ok) {
+                var res = await response.text();
+                var container = document.getElementById("DataContainer");
+                container.innerHTML = res;
+            }
+        }
 
 
 
 
 
-		async function SendCalender()
-		{
-					 const form = document.getElementById('CalenderForm');
-					 const formData = new formData(form);
-							  await PostForm('/RoomPrice/SaveCalender' , formData);
-							  var date = document.getElementById("start").value;
-			await GetList(date ,"")
-									
-		}
+
+        async function Create()
+        {
+            $('#MyModal').modal('show');
+            var response = await fetch("/RoomPrice/CreateView");
+            if (response.ok) {
+                var res = await response.text();
+                $('#ModalBody').html(res);
+                $('#ModalLabel').html("ایجاد بازه ی قیمت");
+
+                LoadSelect();
+                LoadDatePicker();
+            }
+        }
+
+
+        async function SendCreate() {
+            const form = document.getElementById('createForm');
+            const formData = new FormData(form);
+
+            await PostForm('/RoomPrice/CreatePrice', formData);
+            $('#MyModal').modal('hide');
+
+
+            var date = document.getElementById("start").value;
+            await GetList(date, "")
+        }
 
 
 
+        async function SendCalendar() {
+            const form = document.getElementById('CalendarForm');
+            const formData = new FormData(form);
+
+            await PostForm('/RoomPrice/SeveCelendar', formData);
+
+            var date = document.getElementById("start").value;
+            await GetList(date, "")
+        }
 
 
-		async function LastWeek(){
+        async function LastWeek() {
+            var date = document.getElementById("start").value;
+            await GetList(date, "last")
+        }
 
-			var date = document.getElementById("start").value;
-			await GetList(date , "last")
-		}
-
-
-
-		async function NextWeek(){
-
-			var date = document.getElementById("start").value;
-			await GetList(date , "next")
-		}
-
-
-
-		async function ChangeRooms(){
-
-			var rooms = $("#rooms").val();
-		    var date = document.getElementById("start").value;
-
-
-				var response = await fetch("/RoomPrice/List?start=" + date , 
-				{ {
-			method: 'POST',
-			headers: {
-				'Content-Type':'application/json'
-			},
-			body : JSON.stringify(rooms)
-		});
-				if(response.ok) {
-					 var res = await response.text();
-						 var container = document.getElementById("DataContainer");
-						 container.innerHTML = res;
-
-				}
-		}
+        async function NextWeek() {
+            var date = document.getElementById("start").value;
+            await GetList(date, "next")
+        }
 
 
 
-		function LoadDatePicker(){
-			 $(".example1").pDatepicker({
-					initialValue: false,
-					 format: 'YYYY/MM/DD',
-			  autoClose: true
-			});
-		}
+        async function ChangeRooms() {
 
-		function LoadSelect()
-		{
-			  $('.js-select').select2();
+            var rooms = $("#rooms").val();
+            var date = document.getElementById("start").value;
+            var response = await fetch("/RoomPrice/List?start=" + date,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(rooms)
+                });
+            if (response.ok) {
+                var res = await response.text();
+                var container = document.getElementById("DataContainer");
+                container.innerHTML = res;
+            }
 
-					   let allOptions = [];
-					   $('.js-select option').each(function () {
-
-						   allOptions.push($(this).val());
-					   });
+        }
 
 
-					   $('.js-select').val(allOptions).trigger('change');
 
-		}
+        function LoadDatePicker() {
+            $(".example1").pDatepicker({
+                initialValue: false,
+                format: 'YYYY/MM/DD',
+                autoClose: true
 
-		
-	</script>
+            });
+        }
+
+
+        function LoadSelect()
+        {
+            $('.js-select').select2();
+            let allOptions = [];
+
+            $('.js-select option').each(function () {
+                allOptions.push($(this).val());
+            });
+
+            $('.js-select').val(allOptions).trigger('change');
+        }
+
+    </script>
 }
